@@ -1,4 +1,4 @@
-import { getHeaders } from 'h3'
+import { getCookie, getHeaders } from 'h3'
 import { parseAcceptLanguage } from './utils.ts'
 
 import type { H3Event } from 'h3'
@@ -24,4 +24,19 @@ export function getAcceptLanguages(event: H3Event): string[] {
 export function getLocale(event: H3Event, lang = 'en-US'): Intl.Locale {
   const language = getAcceptLanguages(event)[0] || lang
   return new Intl.Locale(language)
+}
+
+/**
+ * get locale from cookie
+ *
+ * @param {H3Event} event The H3 event
+ * @param {string} options.lang The default language, default is `en-US`
+ * @param {string} options.name The cookie name, default is `i18n_locale`
+ * @returns The locale that resolved from cookie
+ */
+export function getCookieLocale(
+  event: H3Event,
+  { lang = 'en-US', name = 'i18n_locale' } = {},
+): Intl.Locale {
+  return new Intl.Locale(getCookie(event, name) || lang)
 }

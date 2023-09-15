@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { getAcceptLanguages, getLocale } from '../src/index.ts'
+import { getAcceptLanguages, getCookieLocale, getLocale } from '../src/index.ts'
 
 import type { H3Event } from 'h3'
 
@@ -94,5 +94,69 @@ describe('getLocale', () => {
     const locale = getLocale(eventMock, 'ja-JP')
 
     expect(locale.baseName).toEqual('ja-JP')
+  })
+})
+
+describe('getCookieLocale', () => {
+  test('basic', () => {
+    const eventMock = {
+      node: {
+        req: {
+          method: 'GET',
+          headers: {
+            cookie: 'i18n_locale=ja-US',
+          },
+        },
+      },
+    } as H3Event
+    const locale = getCookieLocale(eventMock)
+
+    expect(locale.baseName).toEqual('ja-US')
+    expect(locale.language).toEqual('ja')
+    expect(locale.region).toEqual('US')
+  })
+
+  test('cookie is empty', () => {
+    const eventMock = {
+      node: {
+        req: {
+          method: 'GET',
+          headers: {},
+        },
+      },
+    } as H3Event
+    const locale = getCookieLocale(eventMock)
+
+    expect(locale.baseName).toEqual('en-US')
+  })
+
+  test('specify default language', () => {
+    const eventMock = {
+      node: {
+        req: {
+          method: 'GET',
+          headers: {},
+        },
+      },
+    } as H3Event
+    const locale = getCookieLocale(eventMock, { lang: 'ja-JP' })
+
+    expect(locale.baseName).toEqual('ja-JP')
+  })
+
+  test('specify cookie name', () => {
+    const eventMock = {
+      node: {
+        req: {
+          method: 'GET',
+          headers: {
+            cookie: 'intlify_locale=fr-FR',
+          },
+        },
+      },
+    } as H3Event
+    const locale = getCookieLocale(eventMock, { name: 'intlify_locale' })
+
+    expect(locale.baseName).toEqual('fr-FR')
   })
 })
