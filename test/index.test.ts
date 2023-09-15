@@ -79,4 +79,20 @@ describe('getLocale', () => {
 
     expect(locale.baseName).toEqual('en-US')
   })
+
+  test('specify default language', () => {
+    const eventMock = {
+      node: {
+        req: {
+          method: 'GET',
+          headers: {
+            'accept-language': '*',
+          },
+        },
+      },
+    } as H3Event
+    const locale = getLocale(eventMock, 'ja-JP')
+
+    expect(locale.baseName).toEqual('ja-JP')
+  })
 })
