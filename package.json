@@ -1,0 +1,38 @@
+{
+  "name": "@intlify/h3",
+  "version": "1.0.0",
+  "description": "Internationalization for h3",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/intlify/h3/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/intlify/h3.git"
+  },
+  "homepage": "https://github.com/intlify/h3#readme",
+  "type": "module",
+  "scripts": {
+    "prepare": "git config --local core.hooksPath .githooks",
+    "preinstall": "node scripts/preinstall.js",
+    "lint": "deno lint",
+    "format": "deno fmt",
+    "build": "unbuild"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,md,json,jsonc}": [
+      "deno fmt"
+    ],
+    "*.{js,ts,jsx,tsx}": [
+      "deno lint"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.0",
+    "lint-staged": "^14.0.0",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0"
+  }
+}

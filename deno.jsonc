@@ -1,0 +1,29 @@
+{
+  "fmt": {
+    "files": {
+      /*
+      "include": [
+      ],
+      */
+      "exclude": ["node_modules", "dist"]
+    },
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "lint": {
+    "files": {
+      /*
+      "include": [
+      ],
+      */
+      "exclude": ["node_modules", "dist"]
+    }
+    /*
+    "rules": {
+      "tags": ["recommended"],
+      "exclude": [
+      ]
+    }
+    */
+  }
+}

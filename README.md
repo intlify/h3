@@ -1,4 +1,4 @@
-# `@intlify/h3`
+# intlify-h3
 
 Internationalization for h3
 
