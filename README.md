@@ -1,5 +1,5 @@
-# intlify-h3
+# @intlify/h3
 
-Internationalization for h3
+Internationalization utilitis for h3
 
 **NOTICE: This is a work in progress 👷**

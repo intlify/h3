@@ -1,9 +1,12 @@
 {
   "name": "@intlify/h3",
-  "version": "1.0.0",
-  "description": "Internationalization for h3",
-  "keywords": [],
-  "author": "",
+  "version": "0.0.0",
+  "description": "Internationalization utilitis for h3",
+  "keywords": ["i18n", "internationalization", "h3", "intlify"],
+  "author": {
+    "name": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/intlify/h3/issues"
@@ -31,7 +34,9 @@
     "preinstall": "node scripts/preinstall.js",
     "lint": "deno lint",
     "format": "deno fmt",
-    "build": "unbuild"
+    "build": "unbuild",
+    "test": "vitest run",
+    "test:coverage": "npm test -- --reporter verbose --coverage"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,md,json,jsonc}": [
@@ -43,8 +48,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.6.0",
+    "@vitest/coverage-v8": "^0.34.4",
+    "h3": "^1.8.1",
     "lint-staged": "^14.0.0",
     "typescript": "^5.2.2",
-    "unbuild": "^2.0.0"
+    "unbuild": "^2.0.0",
+    "vitest": "^0.34.4"
   }
 }
