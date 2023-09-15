@@ -1,4 +1,7 @@
 {
+  "imports": {
+    "h3": "npm:h3"
+  },
   "fmt": {
     "files": {
       /*
