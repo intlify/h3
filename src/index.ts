@@ -14,3 +14,13 @@ export function getAcceptLanguages(event: H3Event): string[] {
   const acceptLanguage = headers['accept-language']
   return acceptLanguage ? parseAcceptLanguage(acceptLanguage) : []
 }
+
+/**
+ * get locale
+ * @param {H3Event} event The H3 event
+ * @returns {Intl.Locale} The locale that resolved from `accept-language` header string, first language tag is used. if `*` (any language) or empty string is detected, return `en-US`.
+ */
+export function getLocale(event: H3Event): Intl.Locale {
+  const language = getAcceptLanguages(event)[0] || 'en-US'
+  return new Intl.Locale(language)
+}
