@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Lint codes
+        run: deno lint
+
+  build:
+    name: Build
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [18.x]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v4
+
+      - name: Setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build codes
+        run: npm run build
+
+  test:
+    name: test
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [18.x]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v4
+
+      - name: Setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build codes
+        run: npm test
