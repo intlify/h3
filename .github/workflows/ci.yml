@@ -86,16 +86,59 @@ jobs:
       - name: Setup bun
         uses: oven-sh/setup-bun@v1
 
-      - name: Enable corepack
-        run: corepack enable
-
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
+
+      - name: Enable corepack
+        run: corepack enable
 
       - name: Install dependencies
         run: bun install
 
       - name: Build codes
         run: npm test
+  edge-release:
+    needs:
+      - lint
+      - build
+      - test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [18]
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v4
+
+      - name: Setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Release Edge
+        if: |
+          github.event_name == 'push' &&
+          !startsWith(github.event.head_commit.message, '[skip-release]') &&
+          !startsWith(github.event.head_commit.message, 'chore') &&
+          !startsWith(github.event.head_commit.message, 'release') &&
+          !startsWith(github.event.head_commit.message, 'docs')
+        run: ./scripts/release.sh
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+          EDGE_RELEASE: 'true'

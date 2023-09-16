@@ -32,6 +32,8 @@
   "scripts": {
     "prepare": "git config --local core.hooksPath .githooks",
     "preinstall": "node scripts/preinstall.js",
+    "changelog": "gh-changelogen --repo=@intlify/h3",
+    "release": "bumpp --commit \"release: v%s\" --push --tag",
     "lint": "deno lint",
     "format": "deno fmt",
     "build": "unbuild",
@@ -49,6 +51,8 @@
   "devDependencies": {
     "@types/node": "^20.6.0",
     "@vitest/coverage-v8": "^0.34.4",
+    "bumpp": "^9.2.0",
+    "gh-changelogen": "^0.2.8",
     "h3": "^1.8.1",
     "lint-staged": "^14.0.0",
     "typescript": "^5.2.2",
