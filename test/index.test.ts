@@ -95,6 +95,21 @@ describe('getLocale', () => {
 
     expect(locale.baseName).toEqual('ja-JP')
   })
+
+  test('RangeError', () => {
+    const eventMock = {
+      node: {
+        req: {
+          method: 'GET',
+          headers: {
+            'accept-language': 's',
+          },
+        },
+      },
+    } as H3Event
+
+    expect(() => getLocale(eventMock, 'ja-JP')).toThrowError(RangeError)
+  })
 })
 
 describe('getCookieLocale', () => {
@@ -158,5 +173,21 @@ describe('getCookieLocale', () => {
     const locale = getCookieLocale(eventMock, { name: 'intlify_locale' })
 
     expect(locale.baseName).toEqual('fr-FR')
+  })
+
+  test('RangeError', () => {
+    const eventMock = {
+      node: {
+        req: {
+          method: 'GET',
+          headers: {
+            cookie: 'intlify_locale=f',
+          },
+        },
+      },
+    } as H3Event
+
+    expect(() => getCookieLocale(eventMock, { name: 'intlify_locale' }))
+      .toThrowError(RangeError)
   })
 })
