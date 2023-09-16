@@ -10,6 +10,7 @@ on:
 
 jobs:
   lint:
+    name: Lint
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -66,7 +67,7 @@ jobs:
         run: npm run build
 
   test:
-    name: test
+    name: Test
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -99,7 +100,9 @@ jobs:
 
       - name: Build codes
         run: npm test
+
   edge-release:
+    name: Edge Release
     needs:
       - lint
       - build
