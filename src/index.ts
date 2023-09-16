@@ -18,7 +18,7 @@ export function getAcceptLanguages(event: H3Event): string[] {
 /**
  * get locale
  * @param {H3Event} event The H3 event
- * @param {string} lang The default language, default is `en-US`
+ * @param {string} lang The default language tag, default is `en-US`. You must specify the language tag with the {@link https://datatracker.ietf.org/doc/html/rfc4646#section-2.1 | BCP 47 syntax}.
  * @returns {Intl.Locale} The locale that resolved from `accept-language` header string, first language tag is used. if `*` (any language) or empty string is detected, return `en-US`.
  */
 export function getLocale(event: H3Event, lang = 'en-US'): Intl.Locale {
@@ -30,7 +30,7 @@ export function getLocale(event: H3Event, lang = 'en-US'): Intl.Locale {
  * get locale from cookie
  *
  * @param {H3Event} event The H3 event
- * @param {string} options.lang The default language, default is `en-US`
+ * @param {string} options.lang The default language tag, default is `en-US`. You must specify the language tag with the {@link https://datatracker.ietf.org/doc/html/rfc4646#section-2.1 | BCP 47 syntax}.
  * @param {string} options.name The cookie name, default is `i18n_locale`
  * @returns The locale that resolved from cookie
  */
