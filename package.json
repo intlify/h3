@@ -16,6 +16,12 @@
     "url": "git+https://github.com/intlify/h3.git"
   },
   "homepage": "https://github.com/intlify/h3#readme",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">= 18"
+  },
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
