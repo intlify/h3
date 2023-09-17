@@ -10,3 +10,34 @@ export function parseAcceptLanguage(value: string): string[] {
     !(tag === '*' || tag === '')
   )
 }
+
+const objectToString = Object.prototype.toString
+const toTypeString = (value: unknown): string => objectToString.call(value)
+
+/**
+ * check whether the value is a `Intl.Locale` instance
+ *
+ * @param {unknown} val The locale value
+ *
+ * @returns {boolean} Returns `true` if the value is a `Intl.Locale` instance, else `false`.
+ */
+export function isLocale(val: unknown): val is Intl.Locale {
+  return toTypeString(val) === '[object Intl.Locale]'
+}
+
+/**
+ * validate the language tag whether is a well-formed {@link https://datatracker.ietf.org/doc/html/rfc4646#section-2.1 | BCP 47 language tag}.
+ *
+ * @param {string} lang a language tag
+ *
+ * @returns {boolean} Returns `true` if the language tag is valid, else `false`.
+ */
+export function validateLanguageTag(lang: string): boolean {
+  try {
+    // TODO: if we have a better way to validate the language tag, we should use it.
+    new Intl.Locale(lang)
+    return true
+  } catch {
+    return false
+  }
+}
