@@ -1,7 +1,15 @@
-import { describe, expect, test } from 'vitest'
-import { getAcceptLanguages, getCookieLocale, getLocale } from '../src/index.ts'
+import { beforeEach, describe, expect, test } from 'vitest'
+import { createApp, eventHandler, toNodeListener } from 'h3'
+import supertest from 'supertest'
+import {
+  getAcceptLanguages,
+  getCookieLocale,
+  getLocale,
+  setCookieLocale,
+} from '../src/index.ts'
 
-import type { H3Event } from 'h3'
+import type { App, H3Event } from 'h3'
+import type { SuperTest, Test } from 'supertest'
 
 describe('getAcceptLanguages', () => {
   test('basic', () => {
@@ -189,5 +197,72 @@ describe('getCookieLocale', () => {
 
     expect(() => getCookieLocale(eventMock, { name: 'intlify_locale' }))
       .toThrowError(RangeError)
+  })
+})
+
+describe('setCookieLocale', () => {
+  let app: App
+  let request: SuperTest<Test>
+
+  beforeEach(() => {
+    app = createApp({ debug: false })
+    request = supertest(toNodeListener(app))
+  })
+
+  test('specify Locale instance', async () => {
+    app.use(
+      '/',
+      eventHandler((event) => {
+        const locale = new Intl.Locale('ja-JP')
+        setCookieLocale(event, locale)
+        return '200'
+      }),
+    )
+    const result = await request.get('/')
+    expect(result.headers['set-cookie']).toEqual([
+      'i18n_locale=ja-JP; Path=/',
+    ])
+  })
+
+  test('specify language tag', async () => {
+    app.use(
+      '/',
+      eventHandler((event) => {
+        setCookieLocale(event, 'ja-JP')
+        return '200'
+      }),
+    )
+    const result = await request.get('/')
+    expect(result.headers['set-cookie']).toEqual([
+      'i18n_locale=ja-JP; Path=/',
+    ])
+  })
+
+  test('specify cookie name', async () => {
+    app.use(
+      '/',
+      eventHandler((event) => {
+        setCookieLocale(event, 'ja-JP', { name: 'intlify_locale' })
+        return '200'
+      }),
+    )
+    const result = await request.get('/')
+    expect(result.headers['set-cookie']).toEqual([
+      'intlify_locale=ja-JP; Path=/',
+    ])
+  })
+
+  test('Syntax Error', () => {
+    const eventMock = {
+      node: {
+        req: {
+          method: 'GET',
+          headers: {},
+        },
+      },
+    } as H3Event
+
+    expect(() => setCookieLocale(eventMock, 'j'))
+      .toThrowError(/locale is invalid: j/)
   })
 })

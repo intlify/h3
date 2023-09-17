@@ -1,5 +1,5 @@
-import { getCookie, getHeaders } from 'h3'
-import { parseAcceptLanguage } from './utils.ts'
+import { getCookie, getHeaders, setCookie } from 'h3'
+import { isLocale, parseAcceptLanguage, validateLanguageTag } from './utils.ts'
 
 import type { H3Event } from 'h3'
 
@@ -49,4 +49,25 @@ export function getCookieLocale(
   { lang = 'en-US', name = 'i18n_locale' } = {},
 ): Intl.Locale {
   return new Intl.Locale(getCookie(event, name) || lang)
+}
+
+/**
+ * @param {H3Event} event The {@link H3Event | H3} event
+ * @param {string | Intl.Locale} locale The locale value
+ * @param options.name The cookie name, default is `i18n_locale`
+ *
+ * @throws {SyntaxError} Throws a {@link SyntaxError} if `locale` is invalid.
+ */
+export function setCookieLocale(
+  event: H3Event,
+  locale: string | Intl.Locale,
+  { name = 'i18n_locale' } = {},
+): void {
+  if (
+    !(isLocale(locale) ||
+      typeof locale === 'string' && validateLanguageTag(locale))
+  ) {
+    throw new SyntaxError(`locale is invalid: ${locale.toString()}`)
+  }
+  setCookie(event, name, locale.toString())
 }
