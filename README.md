@@ -114,9 +114,7 @@ const middleware = defineI18nMiddleware({
 ### Utilities
 
 `@intlify/h3` composable utilities accept event (from
-`eventHandler((event) => {})`) as their first argument. (Exclud
-`useTranslation`) return the
-[`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
+`eventHandler((event) => {})`) as their first argument. (Exclud `useTranslation`) return the [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
 
 ### Translations
 
@@ -124,31 +122,26 @@ const middleware = defineI18nMiddleware({
 
 ### Headers
 
-- `getHeaderLocale(event)`: get locale from `accept-language` header
-- `getHeaderLocales(event)`: get some locales from `accept-language` header
+- `getHeaderLocale(event, options)`: get locale from `accept-language` header
+- `getHeaderLocales(event, options)`: get some locales from `accept-language` header
 
 ### Cookies
 
-- `getCookieLocale()`: get locale from cookie
-- `setCookieLocale()`: set locale to cookie
+- `getCookieLocale(event, options)`: get locale from cookie
+- `setCookieLocale(event, options)`: set locale to cookie
 
 ### Misc
 
-- `getPathLocale(event)`: get locale from path
-- `getQueryLocale(event)`: get locale from query
+- `getPathLocale(event, options)`: get locale from path
+- `getQueryLocale(event, options)`: get locale from query
 
 ## Helpers
 
-- `detectLocaleFromAcceptLanguageHeader`: detect locale from `accept-language`
-  header
+- `detectLocaleFromAcceptLanguageHeader(event)`: detect locale from `accept-language` header
 
 ## 🙌 Contributing guidelines
 
-If you are interested in contributing to `@intlify/h3`, I highly recommend
-checking out [the contributing guidelines](/CONTRIBUTING.md) here. You'll find
-all the relevant information such as
-[how to make a PR](/CONTRIBUTING.md#pull-request-guidelines),
-[how to setup development](/CONTRIBUTING.md#development-setup)) etc., there.
+If you are interested in contributing to `@intlify/h3`, I highly recommend checking out [the contributing guidelines](/CONTRIBUTING.md) here. You'll find all the relevant information such as [how to make a PR](/CONTRIBUTING.md#pull-request-guidelines), [how to setup development](/CONTRIBUTING.md#development-setup)) etc., there.
 
 ## ©️ License
 
