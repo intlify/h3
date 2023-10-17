@@ -61,7 +61,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
       - name: Build codes
         run: npm run build
@@ -96,10 +96,10 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
-      - name: Build codes
-        run: npm test
+      - name: Test
+        run: npm run test
 
   edge-release:
     name: Edge Release
@@ -132,7 +132,7 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
       - name: Release Edge
         if: |
