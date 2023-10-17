@@ -70,3 +70,18 @@
 - name: 'status: need more repro codes or info'
   description: Lacks enough info to make progress
   color: 'F9C90A'
+- name: '🧹 p1-chore'
+  description: 'Priority 1: no change in change code behavior'
+  color: '#FDDFD7'
+- name: '🍰 p2-nice-to-have'
+  description: "Priority 2: nothing is broken but it's worth addressing"
+  color: '#0e8a16'
+- name: '🔨 p3-minor-bug'
+  description: 'Priority 3: a bug in an edge case that only affects very specific usage'
+  color: '#fbca04'
+- name: '❗ p4-important'
+  description: 'Priority 4: bugs that violate documented behavior, or significantly impact perf'
+  color: '#d93f0b'
+- name: '🔥 p5-urgent'
+  description: 'Priority 5: build-breaking bugs that affect most users and should be fixed ASAP'
+  color: '#ee0701'
