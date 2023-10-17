@@ -1,268 +1,97 @@
-import { beforeEach, describe, expect, test } from 'vitest'
-import { createApp, eventHandler, toNodeListener } from 'h3'
-import supertest from 'supertest'
+import { describe, expect, test } from 'vitest'
+import { createCoreContext } from '@intlify/core'
+
 import {
-  getAcceptLanguages,
-  getCookieLocale,
-  getLocale,
-  setCookieLocale,
+  defineI18nMiddleware,
+  detectLocaleFromAcceptLanguageHeader,
+  useTranslation,
 } from '../src/index.ts'
 
-import type { App, H3Event } from 'h3'
-import type { SuperTest, Test } from 'supertest'
+import type { H3Event } from 'h3'
+import type { CoreContext, LocaleDetector } from '@intlify/core'
 
-describe('getAcceptLanguages', () => {
-  test('basic', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            'accept-language': 'en-US,en;q=0.9,ja;q=0.8',
-          },
+test('detectLocaleFromAcceptLanguageHeader', () => {
+  const eventMock = {
+    node: {
+      req: {
+        method: 'GET',
+        headers: {
+          'accept-language': 'en-US,en;q=0.9,ja;q=0.8',
         },
       },
-    } as H3Event
-    expect(getAcceptLanguages(eventMock)).toEqual(['en-US', 'en', 'ja'])
-  })
-
-  test('any language', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            'accept-language': '*',
-          },
-        },
-      },
-    } as H3Event
-    expect(getAcceptLanguages(eventMock)).toEqual([])
-  })
-
-  test('empty', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {},
-        },
-      },
-    } as H3Event
-    expect(getAcceptLanguages(eventMock)).toEqual([])
-  })
+    },
+  } as H3Event
+  expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
 })
 
-describe('getLocale', () => {
-  test('basic', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            'accept-language': 'en-US,en;q=0.9,ja;q=0.8',
-          },
-        },
+test('defineI18nMiddleware', () => {
+  const middleware = defineI18nMiddleware({
+    locale: detectLocaleFromAcceptLanguageHeader,
+    messages: {
+      en: {
+        hello: 'hello, {name}',
       },
-    } as H3Event
-    const locale = getLocale(eventMock)
-
-    expect(locale.baseName).toEqual('en-US')
-    expect(locale.language).toEqual('en')
-    expect(locale.region).toEqual('US')
-  })
-
-  test('accept-language is any language', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            'accept-language': '*',
-          },
-        },
+      ja: {
+        hello: 'こんにちは, {name}',
       },
-    } as H3Event
-    const locale = getLocale(eventMock)
-
-    expect(locale.baseName).toEqual('en-US')
+    },
   })
-
-  test('specify default language', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            'accept-language': '*',
-          },
-        },
-      },
-    } as H3Event
-    const locale = getLocale(eventMock, 'ja-JP')
-
-    expect(locale.baseName).toEqual('ja-JP')
-  })
-
-  test('RangeError', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            'accept-language': 's',
-          },
-        },
-      },
-    } as H3Event
-
-    expect(() => getLocale(eventMock, 'ja-JP')).toThrowError(RangeError)
-  })
+  expect(middleware.onRequest).toBeDefined()
+  expect(middleware.onAfterResponse).toBeDefined()
 })
 
-describe('getCookieLocale', () => {
+describe('useTranslation', () => {
   test('basic', () => {
+    /**
+     * setup `defineI18nMiddleware` emulates
+     */
+    const context = createCoreContext({
+      locale: detectLocaleFromAcceptLanguageHeader,
+      messages: {
+        en: {
+          hello: 'hello, {name}',
+        },
+        ja: {
+          hello: 'こんにちは, {name}',
+        },
+      },
+    })
     const eventMock = {
       node: {
         req: {
           method: 'GET',
           headers: {
-            cookie: 'i18n_locale=ja-US',
+            'accept-language': 'ja,en',
           },
         },
       },
-    } as H3Event
-    const locale = getCookieLocale(eventMock)
-
-    expect(locale.baseName).toEqual('ja-US')
-    expect(locale.language).toEqual('ja')
-    expect(locale.region).toEqual('US')
-  })
-
-  test('cookie is empty', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {},
-        },
+      context: {
+        i18n: context as CoreContext,
       },
     } as H3Event
-    const locale = getCookieLocale(eventMock)
+    const locale = context.locale as unknown
+    const bindLocaleDetector = (locale as LocaleDetector).bind(null, eventMock)
+    // @ts-ignore ignore type error because this is test
+    context.locale = bindLocaleDetector
 
-    expect(locale.baseName).toEqual('en-US')
+    // test `useTranslation`
+    const t = useTranslation(eventMock)
+    expect(t('hello', { name: 'h3' })).toEqual('こんにちは, h3')
   })
 
-  test('specify default language', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {},
-        },
-      },
-    } as H3Event
-    const locale = getCookieLocale(eventMock, { lang: 'ja-JP' })
-
-    expect(locale.baseName).toEqual('ja-JP')
-  })
-
-  test('specify cookie name', () => {
+  test('not initilize context', () => {
     const eventMock = {
       node: {
         req: {
           method: 'GET',
           headers: {
-            cookie: 'intlify_locale=fr-FR',
+            'accept-language': 'ja,en',
           },
         },
       },
-    } as H3Event
-    const locale = getCookieLocale(eventMock, { name: 'intlify_locale' })
-
-    expect(locale.baseName).toEqual('fr-FR')
-  })
-
-  test('RangeError', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            cookie: 'intlify_locale=f',
-          },
-        },
-      },
+      context: {},
     } as H3Event
 
-    expect(() => getCookieLocale(eventMock, { name: 'intlify_locale' }))
-      .toThrowError(RangeError)
-  })
-})
-
-describe('setCookieLocale', () => {
-  let app: App
-  let request: SuperTest<Test>
-
-  beforeEach(() => {
-    app = createApp({ debug: false })
-    request = supertest(toNodeListener(app))
-  })
-
-  test('specify Locale instance', async () => {
-    app.use(
-      '/',
-      eventHandler((event) => {
-        const locale = new Intl.Locale('ja-JP')
-        setCookieLocale(event, locale)
-        return '200'
-      }),
-    )
-    const result = await request.get('/')
-    expect(result.headers['set-cookie']).toEqual([
-      'i18n_locale=ja-JP; Path=/',
-    ])
-  })
-
-  test('specify language tag', async () => {
-    app.use(
-      '/',
-      eventHandler((event) => {
-        setCookieLocale(event, 'ja-JP')
-        return '200'
-      }),
-    )
-    const result = await request.get('/')
-    expect(result.headers['set-cookie']).toEqual([
-      'i18n_locale=ja-JP; Path=/',
-    ])
-  })
-
-  test('specify cookie name', async () => {
-    app.use(
-      '/',
-      eventHandler((event) => {
-        setCookieLocale(event, 'ja-JP', { name: 'intlify_locale' })
-        return '200'
-      }),
-    )
-    const result = await request.get('/')
-    expect(result.headers['set-cookie']).toEqual([
-      'intlify_locale=ja-JP; Path=/',
-    ])
-  })
-
-  test('Syntax Error', () => {
-    const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {},
-        },
-      },
-    } as H3Event
-
-    expect(() => setCookieLocale(eventMock, 'j'))
-      .toThrowError(/locale is invalid: j/)
+    expect(() => useTranslation(eventMock)).toThrowError()
   })
 })
