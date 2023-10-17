@@ -15,6 +15,7 @@
     "email": "kawakazu80@gmail.com"
   },
   "license": "MIT",
+  "funding": "https://github.com/sponsors/kazupon",
   "bugs": {
     "url": "https://github.com/intlify/h3/issues"
   },
@@ -32,6 +33,7 @@
   "engines": {
     "node": ">= 18"
   },
+  "sideEffects": false,
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
@@ -47,12 +49,12 @@
   },
   "scripts": {
     "prepare": "git config --local core.hooksPath .githooks",
-    "preinstall": "node scripts/preinstall.js",
     "changelog": "gh-changelogen --repo=intlify/h3",
     "release": "bumpp --commit \"release: v%s\" --push --tag",
     "lint": "deno lint",
     "format": "deno fmt",
     "build": "unbuild",
+    "play": "bun run ./playground/index.ts",
     "test": "vitest run",
     "test:coverage": "npm test -- --reporter verbose --coverage"
   },
