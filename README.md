@@ -142,6 +142,14 @@ const middleware = defineI18nMiddleware({
 - `detectLocaleFromAcceptLanguageHeader`: detect locale from `accept-language`
   header
 
+## 🙌 Contributing guidelines
+
+If you are interested in contributing to `@intlify/h3`, I highly recommend
+checking out [the contributing guidelines](/CONTRIBUTING.md) here. You'll find
+all the relevant information such as
+[how to make a PR](/CONTRIBUTING.md#pull-request-guidelines),
+[how to setup development](/CONTRIBUTING.md#development-setup)) etc., there.
+
 ## ©️ License
 
 [MIT](http://opensource.org/licenses/MIT)
