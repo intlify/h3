@@ -1,3 +1,15 @@
+# v0.1.1 (2023-10-17T18:53:35Z)
+
+<!-- Release notes generated using configuration in .github/release.yml at v0.1.1 -->
+
+## What's Changed
+
+### 🍭 Examples
+
+- feat: add playground by @kazupon in https://github.com/intlify/h3/pull/8
+
+**Full Changelog**: https://github.com/intlify/h3/compare/v0.1.0...v0.1.1
+
 # v0.1.0 (2023-10-17T06:23:35Z)
 
 ## What's Changed
