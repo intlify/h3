@@ -1,8 +1,15 @@
 {
   "name": "@intlify/h3",
   "version": "0.0.0",
-  "description": "Internationalization utilitis for h3",
-  "keywords": ["i18n", "internationalization", "h3", "intlify"],
+  "description": "Internationalization middleware & utilities for h3",
+  "keywords": [
+    "i18n",
+    "h3",
+    "internationalization",
+    "intlify",
+    "utilities",
+    "middleware"
+  ],
   "author": {
     "name": "kazuya kawaguchi",
     "email": "kawakazu80@gmail.com"

@@ -4,7 +4,7 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![CI][ci-src]][ci-href]
 
-Internationalization middleware & utilitis for h3
+Internationalization middleware & utilities for h3
 
 ## 🌟 Features
 
