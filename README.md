@@ -82,7 +82,7 @@ createServer(toNodeListener(app)).listen(3000)
 
 You can detect locale with your custom logic from current `H3Event`.
 
-example for detecting locale from url query header:
+example for detecting locale from url query:
 
 ```ts
 import { defineI18nMiddleware, getQueryLocale } from '@intlify/h3'
