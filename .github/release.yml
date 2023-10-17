@@ -5,6 +5,7 @@ changelog:
     authors:
       - octocat
       - renovate[bot]
+      - renovate
   categories:
     - title: 🌟 Features
       labels:
