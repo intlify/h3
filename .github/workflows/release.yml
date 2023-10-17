@@ -50,7 +50,7 @@ jobs:
         run: |
           git restore --source=HEAD --staged --worktree -- package.json bun.lockb
           bun install --frozen-lockfile
-          npm run changelog --tag=${{ steps.split.outputs._2 }}
+          npm run changelog -- --tag=${{ steps.split.outputs._2 }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
