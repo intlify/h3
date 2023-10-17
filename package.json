@@ -48,7 +48,7 @@
   "scripts": {
     "prepare": "git config --local core.hooksPath .githooks",
     "preinstall": "node scripts/preinstall.js",
-    "changelog": "gh-changelogen --repo=@intlify/h3",
+    "changelog": "gh-changelogen --repo=intlify/h3",
     "release": "bumpp --commit \"release: v%s\" --push --tag",
     "lint": "deno lint",
     "format": "deno fmt",
