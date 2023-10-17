@@ -5,6 +5,8 @@ import {
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils/h3'
 
+export * from '@intlify/utils/h3'
+
 import type { AppOptions, H3Event } from 'h3'
 import type {
   CoreContext,
@@ -42,7 +44,7 @@ export interface I18nMiddleware {
  * @description
  * Define the middleware to be specified for h3 [`createApp`]({@link https://www.jsdocs.io/package/h3#createApp})
  *
- * @param {CoreOptions} options - An i18n options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`
+ * @param {CoreOptions} options - An i18n options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
  *
  * @returns {I18nMiddleware} A defined i18n middleware, which is included `onRequest` and `onAfterResponse` options of `createApp`
  *
@@ -116,6 +118,7 @@ export function defineI18nMiddleware(
  *
  * @example
  * ```js
+ * import { createApp } from 'h3'
  * import { defineI18nMiddleware, detectLocaleWithAcceeptLanguageHeader } from '@intlify/h3'
  *
  * const middleware = defineI18nMiddleware({
@@ -143,6 +146,30 @@ type TranslationFunction = (
   ...args: unknown[]
 ) => string
 
+/**
+ * use translation function in event handler
+ *
+ * @description
+ * This function must be initialized with defineI18nMiddleware. See about the {@link defineI18nMiddleware}
+ *
+ * @param {H3Event} event - A h3 event
+ *
+ * @returns {TranslationFunction} Return a translation function, which can be translated with i18n resource messages
+ *
+ * @example
+ * ```js
+ * import { createRouter } from 'h3'
+ *
+ * const router = createRouter()
+ * router.get(
+ *   '/',
+ *   eventHandler((event) => {
+ *     const t = useTranslation(event)
+ *     return t('hello', { name: 'h3' })
+ *   }),
+ * )
+ * ```
+ */
 // TODO: should support key completion
 export function useTranslation(event: H3Event): TranslationFunction {
   if (event.context.i18n == null) {

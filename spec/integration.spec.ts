@@ -1,7 +1,7 @@
 import { afterEach, expect, test, vi } from 'vitest'
-import { createApp, eventHandler, getRequestURL, toNodeListener } from 'h3'
+import { createApp, eventHandler, toNodeListener } from 'h3'
+import { getQueryLocale } from '@intlify/utils/h3'
 import supertest from 'supertest'
-import { getQueryLocale } from '@intlify/utils'
 
 import {
   defineI18nMiddleware,
@@ -51,19 +51,16 @@ test('translation', async () => {
 
 test('custom locale detection', async () => {
   const defaultLocale = 'en'
-  // TODO: should be improved locale detector arguments, first argument should be passed default locale
+
+  // define custom locale detector
   const localeDetector = (event: H3Event): string => {
     try {
-      const url = getRequestURL(event)
-      console.log('custom locale detector:', url)
-      // TODO: use `getQueryLocale` from `@intlify/utils/h3`
-      const locale = getQueryLocale(url)
-      console.log('custom locale detector:', locale)
-      return locale.toString()
+      return getQueryLocale(event).toString()
     } catch (_e) {
       return defaultLocale
     }
   }
+
   const middleware = defineI18nMiddleware({
     locale: localeDetector,
     messages: {
