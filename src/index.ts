@@ -1,8 +1,6 @@
-import {
-  createCoreContext,
-  NOT_REOSLVED,
-  translate as _translate,
-} from '@intlify/core'
+// deno-lint-ignore-file no-explicit-any ban-types
+
+import { createCoreContext, NOT_REOSLVED, translate as _translate } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils/h3'
 
 export * from '@intlify/utils/h3'
@@ -11,8 +9,14 @@ import type { AppOptions, H3Event } from 'h3'
 import type {
   CoreContext,
   CoreOptions,
+  IsEmptyObject,
   Locale,
   LocaleDetector,
+  LocaleMessage,
+  NamedValue,
+  PickupPaths,
+  RemovedIndexResources,
+  TranslateOptions,
 } from '@intlify/core'
 
 declare module 'h3' {
@@ -140,11 +144,151 @@ export const detectLocaleFromAcceptLanguageHeader = (
   event: H3Event,
 ): Locale => getHeaderLocale(event).toString()
 
-// TODO: should support key completion
-type TranslationFunction = (
-  key: string,
-  ...args: unknown[]
-) => string
+/**
+ * The type definition of Locale Message for `@intlify/h3` package
+ *
+ * @description
+ * The typealias is used to strictly define the type of the Locale message.
+ *
+ * @example
+ * ```ts
+ * // type.d.ts (`.d.ts` file at your app)
+ * import { DefineLocaleMessage } from '@intlify/h3'
+ *
+ * declare module '@intlify/h3' {
+ *   export interface DefineLocaleMessage {
+ *     title: string
+ *     menu: {
+ *       login: string
+ *     }
+ *   }
+ * }
+ * ```
+ */
+// deno-lint-ignore no-empty-interface
+export interface DefineLocaleMessage extends LocaleMessage<string> {} // eslint-disable-line @typescript-eslint/no-empty-interface
+
+type ResolveResourceKeys<
+  Schema extends Record<string, any> = {},
+  DefineLocaleMessageSchema extends Record<string, any> = {},
+  DefinedLocaleMessage extends RemovedIndexResources<
+    DefineLocaleMessageSchema
+  > = RemovedIndexResources<DefineLocaleMessageSchema>,
+  SchemaPaths = IsEmptyObject<Schema> extends false
+    ? PickupPaths<{ [K in keyof Schema]: Schema[K] }>
+    : never,
+  DefineMessagesPaths = IsEmptyObject<DefinedLocaleMessage> extends false ? PickupPaths<
+      { [K in keyof DefinedLocaleMessage]: DefinedLocaleMessage[K] }
+    >
+    : never,
+> = SchemaPaths | DefineMessagesPaths
+
+/**
+ * The translation function, which will be defined by {@link useTranslation}.
+ */
+interface TranslationFunction<
+  Schema extends Record<string, any> = {},
+  DefineLocaleMessageSchema extends Record<string, any> = {},
+  ResourceKeys = ResolveResourceKeys<Schema, DefineLocaleMessageSchema>,
+> {
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(key: Key | ResourceKeys): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {number} plural A plural choice number
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(key: Key | ResourceKeys, plural: number): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {number} plural A plural choice number
+   * @param {TranslateOptions} options A translate options, about details see {@link TranslateOptions}
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(
+    key: Key | ResourceKeys,
+    plural: number,
+    options: TranslateOptions,
+  ): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {string} defaultMsg A default message, if the key is not found
+   * @returns {string} A translated message, if the key is not found, return the `defaultMsg` argument
+   */
+  <Key extends string>(key: Key | ResourceKeys, defaultMsg: string): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {string} defaultMsg A default message, if the key is not found
+   * @param {TranslateOptions} options A translate options, about details see {@link TranslateOptions}
+   * @returns {string} A translated message, if the key is not found, return the `defaultMsg` argument
+   */
+  <Key extends string>(
+    key: Key | ResourceKeys,
+    defaultMsg: string,
+    options: TranslateOptions,
+  ): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {unknown[]} list A list for list interpolation
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(key: Key | ResourceKeys, list: unknown[]): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {unknown[]} list A list for list interpolation
+   * @param {number} plural A plural choice number
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(key: Key | ResourceKeys, list: unknown[], plural: number): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {unknown[]} list A list for list interpolation
+   * @param {string} defaultMsg A default message, if the key is not found
+   * @returns {string} A translated message, if the key is not found, return the `defaultMsg` argument
+   */
+  <Key extends string>(key: Key | ResourceKeys, list: unknown[], defaultMsg: string): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {unknown[]} list A list for list interpolation
+   * @param {TranslateOptions} options A translate options, about details see {@link TranslateOptions}
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(key: Key | ResourceKeys, list: unknown[], options: TranslateOptions): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {NamedValue} named A named value for named interpolation
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(key: Key | ResourceKeys, named: NamedValue): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {NamedValue} named A named value for named interpolation
+   * @param {number} plural A plural choice number
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(key: Key | ResourceKeys, named: NamedValue, plural: number): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {NamedValue} named A named value for named interpolation
+   * @param {string} defaultMsg A default message, if the key is not found
+   * @returns {string} A translated message, if the key is not found, return the `defaultMsg` argument
+   */
+  <Key extends string>(key: Key | ResourceKeys, named: NamedValue, defaultMsg: string): string
+  /**
+   * @param {Key | ResourceKeys} key A translation key
+   * @param {NamedValue} named A named value for named interpolation
+   * @param {TranslateOptions} options A translate options, about details see {@link TranslateOptions}
+   * @returns {string} A translated message, if the key is not found, return the key
+   */
+  <Key extends string>(
+    key: Key | ResourceKeys,
+    named: NamedValue,
+    options: TranslateOptions,
+  ): string
+}
 
 /**
  * use translation function in event handler
@@ -170,15 +314,16 @@ type TranslationFunction = (
  * )
  * ```
  */
-// TODO: should support key completion
-export function useTranslation(event: H3Event): TranslationFunction {
+export function useTranslation<
+  Schema extends Record<string, any> = {},
+  Event extends H3Event = H3Event,
+>(event: Event): TranslationFunction<Schema, DefineLocaleMessage> {
   if (event.context.i18n == null) {
     throw new Error(
       'middleware not initialized, please setup `onRequest` and `onAfterResponse` options of `createApp` with the middleware obtained with `defineI18nRequestMiddleware`',
     )
   }
 
-  // TODO: should design rest arguments
   function translate(key: string, ...args: unknown[]): string {
     const result = Reflect.apply(_translate, null, [
       event.context.i18n!,
@@ -188,5 +333,5 @@ export function useTranslation(event: H3Event): TranslationFunction {
     return NOT_REOSLVED === result ? key : result as string
   }
 
-  return translate
+  return translate as TranslationFunction<Schema, DefineLocaleMessage>
 }

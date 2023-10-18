@@ -107,6 +107,17 @@ const middleware = defineI18nMiddleware({
 })
 ```
 
+## 🖌️ Resource keys completion
+
+> [!NOTE]  
+> **This is experimental feature**.
+> Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
+
+You can interpolate resources key on translation function with `useTranslation`.
+
+
+About how to setup, see the [`global-resource-schema` and `local-resource-schema`](./examples/)
+
 ## 🛠️ Utilites & Helpers
 
 `@intlify/h3` has a concept of composable utilities & helpers.

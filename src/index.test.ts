@@ -5,7 +5,7 @@ import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   useTranslation,
-} from '../src/index.ts'
+} from './index.ts'
 
 import type { H3Event } from 'h3'
 import type { CoreContext, LocaleDetector } from '@intlify/core'

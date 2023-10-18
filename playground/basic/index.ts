@@ -4,7 +4,7 @@ import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   useTranslation,
-} from '../src/index'
+} from '../../src/index.ts' // `@inlify/h3`
 
 const middleware = defineI18nMiddleware({
   locale: detectLocaleFromAcceptLanguageHeader,

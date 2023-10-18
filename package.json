@@ -54,8 +54,10 @@
     "lint": "deno lint",
     "format": "deno fmt",
     "build": "unbuild",
-    "play": "bun run ./playground/index.ts",
-    "test": "vitest run",
+    "play:basic": "bun run ./playground/basicindex.ts",
+    "test": "npm run test:type && npm run test:unit",
+    "test:type": "vitest typecheck --run",
+    "test:unit": "vitest run",
     "test:coverage": "npm test -- --reporter verbose --coverage"
   },
   "lint-staged": {
@@ -80,7 +82,7 @@
     "vitest": "^1.0.0-beta.2"
   },
   "dependencies": {
-    "@intlify/core": "npm:@intlify/core-edge@9.5.0-3caed81",
+    "@intlify/core": "npm:@intlify/core-edge@9.5.0-bd7ec22",
     "@intlify/utils": "^0.9.0"
   }
 }
