@@ -3,24 +3,18 @@
     "h3": "npm:h3"
   },
   "fmt": {
-    "files": {
-      /*
-      "include": [
-      ],
-      */
-      "exclude": ["node_modules", "dist", "README.md"]
-    },
+    "exclude": [
+      "node_modules",
+      "dist",
+      "coverage",
+      "**/*.md"
+    ],
+    "lineWidth": 100,
     "semiColons": false,
     "singleQuote": true
   },
   "lint": {
-    "files": {
-      /*
-      "include": [
-      ],
-      */
-      "exclude": ["node_modules", "dist"]
-    }
+    "exclude": ["node_modules", "dist", "coverage", "playground"]
     /*
     "rules": {
       "tags": ["recommended"],
