@@ -107,16 +107,144 @@ const middleware = defineI18nMiddleware({
 })
 ```
 
+## 🧩 Type-safe resources
+
+> [!WARNING]  
+> **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
+> We would like to get feedback from you 🙂.
+
+> [!NOTE]
+> The exeample code is [here](./playground/typesafe-schema)
+
+You can support the type-safe resources with schema using TypeScript on `defineI18nMiddleware` options.
+
+Locale messages resource:
+
+```ts
+export default {
+  hello: 'hello, {name}!'
+}
+```
+
+your application code:
+
+```ts
+import { defineI18nMiddleware } from '@intlify/h3'
+import { createApp } from 'h3'
+import en from './locales/en.ts'
+
+// define resource schema, as 'en' is master resource schema
+type ResourceSchema = typeof en
+
+const middleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
+  messages: {
+    en: { hello: 'Hello, {name}' },
+  },
+  // something options
+  // ...
+})
+
+const app = createApp({ ...middleware })
+// someting your implementation code ...
+// ...
+```
+
+Result of type checking with `tsc`:
+
+```sh
+npx tsc --noEmit
+index.ts:13:3 - error TS2741: Property 'ja' is missing in type '{ en: { hello: string; }; }' but required in type '{ en: ResourceSchema; ja: ResourceSchema; }'.
+
+13   messages: {
+     ~~~~~~~~
+
+  ../../node_modules/@intlify/core/node_modules/@intlify/core-base/dist/core-base.d.ts:125:5
+    125     messages?: {
+            ~~~~~~~~
+    The expected type comes from property 'messages' which is declared here on type 'CoreOptions<string, { message: ResourceSchema; datetime: DateTimeFormat; number: NumberFormat; }, { messages: "en"; datetimeFormats: "en"; numberFormats: "en"; } | { ...; }, ... 8 more ..., NumberFormats<...>>'
+
+
+Found 1 error in index.ts:13
+```
+
+If you are using [Visual Studio Code](https://code.visualstudio.com/) as an editor, you can notice that there is a resource definition omission in the editor with the following error before you run the typescript compilation.
+
+![Type-safe resources](assets/typesafe-schema.png)
+
+
 ## 🖌️ Resource keys completion
 
-> [!NOTE]  
-> **This is experimental feature**.
+> [!WARNING]  
+> **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
+> We would like to get feedback from you 🙂.
+
+> [!NOTE]
 > Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
 
-You can interpolate resources key on translation function with `useTranslation`.
+You can completion resources key on translation function with `useTranslation`.
 
+![Key Completion](assets/key-completion.gif)
 
-About how to setup, see the [`global-resource-schema` and `local-resource-schema`](./examples/)
+resource keys completion has twe ways.
+
+### Type parameter for `useTranslation`
+
+> [!NOTE]
+> The exeample code is [here](./playground/local-schema)
+
+You can `useTranslation` set the type parameter to the resource schema you want to key completion of the translation function.
+
+the part of example:
+```ts
+const router = createRouter()
+router.get(
+  '/',
+  eventHandler((event) => {
+    type ResourceSchema = {
+      hello: string
+    }
+    // set resource schema as type parameter
+    const t = useTranslation<ResourceSchema>(event)
+    // you can completion when you type `t('`
+    return t('hello', { name: 'h3' })
+  }),
+)
+```
+
+### define global resource schema with `declare module '@intlify/h3'`
+
+> [!NOTE]
+> The exeample code is [here](./playground/global-schema)
+
+You can do resource key completion with the translation function using the typescript `declare module`.
+
+the part of example:
+```ts
+import en from './locales/en.ts'
+
+// 'en' resource is master schema
+type ResourceSchema = typeof en
+
+// you can put the type extending with `declare module` as global resource schema
+declare module '@intlify/h3' {
+  // extend `DefineLocaleMessage` with `ResourceSchema`
+  export interface DefineLocaleMessage extends ResourceSchema {}
+}
+
+const router = createRouter()
+router.get(
+  '/',
+  eventHandler((event) => {
+    const t = useTranslation(event)
+    // you can completion when you type `t('`
+    return t('hello', { name: 'h3' })
+  }),
+)
+
+```
+
+The advantage of this way is that it is not necessary to specify the resource schema in the `useTranslation` type parameter.
+
 
 ## 🛠️ Utilites & Helpers
 

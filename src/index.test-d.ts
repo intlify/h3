@@ -1,16 +1,29 @@
 import { expectTypeOf, test } from 'vitest'
-import { useTranslation } from './index.ts'
+import { defineI18nMiddleware, useTranslation } from './index.ts'
 
 import type { H3Event } from 'h3'
 
 /**
  * you can define global resource schema extending with `declare module`
  */
-// declare module './index.ts' {
-//   export interface DefineLocaleMessage {
-//     test: string
-//   }
-// }
+declare module './index.ts' {
+  export interface DefineLocaleMessage {
+    test: string
+  }
+}
+
+test('defineI18nMiddleware', () => {
+  const en = {
+    hello: 'workd',
+  }
+  type ResourceSchema = typeof en
+  defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
+    messages: {
+      en: { hello: 'world' },
+      ja: { hello: '世界' },
+    },
+  })
+})
 
 test('translation function', () => {
   const eventMock = {

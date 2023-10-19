@@ -4,7 +4,7 @@ import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   useTranslation,
-} from '../../src/index.ts' // `@inlify/h3`
+} from '../../src/index.ts' // in your project, `import { ... } from '@inlify/h3'`
 
 import en from './locales/en.ts'
 import ja from './locales/ja.ts'
@@ -12,6 +12,10 @@ import ja from './locales/ja.ts'
 // 'en' resource is master schema
 type ResourceSchema = typeof en
 
+// you can put the type extending with `declare module` as global resource schema
+declare module '../../src/index.ts' { // please use `declare module '@intlifly/h3'`, if you want to use global resource schema in your project.
+  export interface DefineLocaleMessage extends ResourceSchema {}
+}
 const middleware = defineI18nMiddleware({
   locale: detectLocaleFromAcceptLanguageHeader,
   messages: {
@@ -26,8 +30,7 @@ const router = createRouter()
 router.get(
   '/',
   eventHandler((event) => {
-    // you can put the type parameter to `useTranslation`, as resource schema locally
-    const t = useTranslation<ResourceSchema>(event)
+    const t = useTranslation(event)
     return t('hello', { name: 'h3' })
   }),
 )

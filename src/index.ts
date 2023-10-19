@@ -13,9 +13,12 @@ import type {
   Locale,
   LocaleDetector,
   LocaleMessage,
+  LocaleParams,
   NamedValue,
   PickupPaths,
   RemovedIndexResources,
+  RemoveIndexSignature,
+  SchemaParams,
   TranslateOptions,
 } from '@intlify/core'
 
@@ -24,6 +27,14 @@ declare module 'h3' {
     i18n?: CoreContext
   }
 }
+
+type DefaultLocaleMessageSchema<
+  Schema = RemoveIndexSignature<
+    {
+      [K in keyof DefineLocaleMessage]: DefineLocaleMessage[K]
+    }
+  >,
+> = IsEmptyObject<Schema> extends true ? LocaleMessage<string> : Schema
 
 /**
  * i18n middleware for h3
@@ -75,13 +86,26 @@ export interface I18nMiddleware {
  * const app = createApp({ ...middleware })
  * ```
  */
-export function defineI18nMiddleware(
-  options: CoreOptions = {},
+export function defineI18nMiddleware<
+  Schema = DefaultLocaleMessageSchema,
+  Locales = string,
+  Message = string,
+  Options extends CoreOptions<
+    Message,
+    SchemaParams<Schema, Message>,
+    LocaleParams<Locales>
+  > = CoreOptions<
+    Message,
+    SchemaParams<Schema, Message>,
+    LocaleParams<Locales>
+  >,
+>(
+  options: Options,
 ): {
   onRequest: AppOptions['onRequest']
   onAfterResponse: AppOptions['onAfterResponse']
 } {
-  const i18n = createCoreContext(options)
+  const i18n = createCoreContext(options as CoreOptions)
   const orgLocale = i18n.locale
 
   let staticLocaleDetector: LocaleDetector | null = null
