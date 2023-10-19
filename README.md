@@ -114,7 +114,7 @@ const middleware = defineI18nMiddleware({
 > We would like to get feedback from you 🙂.
 
 > [!NOTE]
-> The exeample code is [here](playground/typesafe-schema)
+> The exeample code is [here](h3/playground/typesafe-schema)
 
 You can support the type-safe resources with schema using TypeScript on `defineI18nMiddleware` options.
 
@@ -190,7 +190,7 @@ resource keys completion has twe ways.
 ### Type parameter for `useTranslation`
 
 > [!NOTE]
-> The exeample code is [here](playground/local-schema)
+> The exeample code is [here](h3/playground/local-schema)
 
 You can `useTranslation` set the type parameter to the resource schema you want to key completion of the translation function.
 
@@ -214,7 +214,7 @@ router.get(
 ### global resource schema with `declare module '@intlify/h3'`
 
 > [!NOTE]
-> The exeample code is [here](playground/global-schema)
+> The exeample code is [here](h3/playground/global-schema)
 
 You can do resource key completion with the translation function using the typescript `declare module`.
 
