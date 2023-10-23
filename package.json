@@ -83,6 +83,6 @@
   },
   "dependencies": {
     "@intlify/core": "npm:@intlify/core-edge@9.5.0-bd7ec22",
-    "@intlify/utils": "^0.10.0"
+    "@intlify/utils": "^0.11.0"
   }
 }
