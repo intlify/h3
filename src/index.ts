@@ -344,7 +344,7 @@ export function useTranslation<
 >(event: Event): TranslationFunction<Schema, DefineLocaleMessage> {
   if (event.context.i18n == null) {
     throw new Error(
-      'middleware not initialized, please setup `onRequest` and `onAfterResponse` options of `createApp` with the middleware obtained with `defineI18nRequestMiddleware`',
+      'middleware not initialized, please setup `onRequest` and `onAfterResponse` options of `createApp` with the middleware obtained with `defineI18nMiddleware`',
     )
   }
 

@@ -54,7 +54,7 @@
     "lint": "deno lint",
     "format": "deno fmt",
     "build": "unbuild",
-    "play:basic": "bun run ./playground/basicindex.ts",
+    "play:basic": "bun run ./playground/basic/index.ts",
     "test": "npm run test:type && npm run test:unit",
     "test:type": "vitest typecheck --run",
     "test:unit": "vitest run",
