@@ -75,7 +75,7 @@
     "bumpp": "^9.2.0",
     "gh-changelogen": "^0.2.8",
     "h3": "^1.8.2",
-    "lint-staged": "^14.0.0",
+    "lint-staged": "^15.0.2",
     "supertest": "^6.3.3",
     "typescript": "^5.2.2",
     "unbuild": "^2.0.0",
@@ -83,6 +83,6 @@
   },
   "dependencies": {
     "@intlify/core": "npm:@intlify/core-edge@9.5.0-bd7ec22",
-    "@intlify/utils": "^0.10.0"
+    "@intlify/utils": "^0.11.1"
   }
 }
