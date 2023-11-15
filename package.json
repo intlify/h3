@@ -56,7 +56,7 @@
     "build": "unbuild",
     "play:basic": "bun run ./playground/basic/index.ts",
     "test": "npm run test:type && npm run test:unit",
-    "test:type": "vitest typecheck --run",
+    "test:type": "vitest run --typecheck",
     "test:unit": "vitest run",
     "test:coverage": "npm test -- --reporter verbose --coverage"
   },
@@ -71,7 +71,7 @@
   "devDependencies": {
     "@types/node": "^20.6.0",
     "@types/supertest": "^2.0.12",
-    "@vitest/coverage-v8": "^1.0.0-beta.2",
+    "@vitest/coverage-v8": "^1.0.0-beta.4",
     "bumpp": "^9.2.0",
     "gh-changelogen": "^0.2.8",
     "h3": "^1.8.2",
@@ -79,7 +79,7 @@
     "supertest": "^6.3.3",
     "typescript": "^5.2.2",
     "unbuild": "^2.0.0",
-    "vitest": "^1.0.0-beta.2"
+    "vitest": "^1.0.0-beta.4a"
   },
   "dependencies": {
     "@intlify/core": "^9.6.0",
