@@ -46,11 +46,11 @@ export interface I18nMiddleware {
   /**
    * `onRequest` option of `createApp`
    */
-  onRequest: AppOptions['onRequest']
+  onRequest: NonNullable<AppOptions['onRequest']>
   /**
    * `onAfterResponse` option of `createApp`
    */
-  onAfterResponse: AppOptions['onAfterResponse']
+  onAfterResponse: NonNullable<AppOptions['onAfterResponse']>
 }
 
 /**
@@ -101,10 +101,7 @@ export function defineI18nMiddleware<
   >,
 >(
   options: Options,
-): {
-  onRequest: AppOptions['onRequest']
-  onAfterResponse: AppOptions['onAfterResponse']
-} {
+): I18nMiddleware {
   const i18n = createCoreContext(options as CoreOptions)
   const orgLocale = i18n.locale
 
