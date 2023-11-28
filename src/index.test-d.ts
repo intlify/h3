@@ -25,7 +25,7 @@ test('defineI18nMiddleware', () => {
   })
 })
 
-test('translation function', () => {
+test('translation function', async () => {
   const eventMock = {
     node: {
       req: {
@@ -44,7 +44,7 @@ test('translation function', () => {
     },
   }
 
-  const t = useTranslation<typeof resources>(eventMock)
+  const t = await useTranslation<typeof resources>(eventMock)
   expectTypeOf<string>(t('test')).toMatchTypeOf<string>()
   expectTypeOf<string>(t('foo')).toMatchTypeOf<string>()
   expectTypeOf<string>(t('bar.buz.baz')).toMatchTypeOf<string>()

@@ -41,7 +41,7 @@ test('defineI18nMiddleware', () => {
 })
 
 describe('useTranslation', () => {
-  test('basic', () => {
+  test('basic', async () => {
     /**
      * setup `defineI18nMiddleware` emulates
      */
@@ -75,11 +75,11 @@ describe('useTranslation', () => {
     context.locale = bindLocaleDetector
 
     // test `useTranslation`
-    const t = useTranslation(eventMock)
+    const t = await useTranslation(eventMock)
     expect(t('hello', { name: 'h3' })).toEqual('こんにちは, h3')
   })
 
-  test('not initilize context', () => {
+  test('not initilize context', async () => {
     const eventMock = {
       node: {
         req: {
@@ -92,6 +92,6 @@ describe('useTranslation', () => {
       context: {},
     } as H3Event
 
-    expect(() => useTranslation(eventMock)).toThrowError()
+    await expect(() => useTranslation(eventMock)).rejects.toThrowError()
   })
 })

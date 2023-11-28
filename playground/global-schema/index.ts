@@ -29,8 +29,8 @@ const app = createApp({ ...middleware })
 const router = createRouter()
 router.get(
   '/',
-  eventHandler((event) => {
-    const t = useTranslation(event)
+  eventHandler(async (event) => {
+    const t = await useTranslation(event)
     return t('hello', { name: 'h3' })
   }),
 )

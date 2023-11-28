@@ -1,4 +1,4 @@
-import { afterEach, expect, test, vi } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 import { createApp, eventHandler, toNodeListener } from 'h3'
 import { getQueryLocale } from '@intlify/utils/h3'
 import supertest from 'supertest'
@@ -11,6 +11,8 @@ import {
 
 import type { App, H3Event } from 'h3'
 import type { SuperTest, Test } from 'supertest'
+import type { CoreContext } from '@intlify/core'
+import type { DefineLocaleMessage } from '../src/index.ts'
 
 let app: App
 let request: SuperTest<Test>
@@ -36,8 +38,8 @@ test('translation', async () => {
 
   app.use(
     '/',
-    eventHandler((event) => {
-      const t = useTranslation(event)
+    eventHandler(async (event) => {
+      const t = await useTranslation(event)
       return { message: t('hello', { name: 'h3' }) }
     }),
   )
@@ -49,40 +51,93 @@ test('translation', async () => {
   expect(res.body).toEqual({ message: 'hello, h3' })
 })
 
-test('custom locale detection', async () => {
-  const defaultLocale = 'en'
-
-  // define custom locale detector
-  const localeDetector = (event: H3Event): string => {
-    try {
+describe('custom locale detection', () => {
+  test('basic', async () => {
+    // define custom locale detector
+    const localeDetector = (event: H3Event): string => {
       return getQueryLocale(event).toString()
-    } catch (_e) {
-      return defaultLocale
     }
-  }
 
-  const middleware = defineI18nMiddleware({
-    locale: localeDetector,
-    messages: {
+    const middleware = defineI18nMiddleware({
+      locale: localeDetector,
+      messages: {
+        en: {
+          hello: 'hello, {name}',
+        },
+        ja: {
+          hello: 'こんにちは, {name}',
+        },
+      },
+    })
+    app = createApp({ ...middleware })
+    request = supertest(toNodeListener(app))
+
+    app.use(
+      '/',
+      eventHandler(async (event) => {
+        const t = await useTranslation(event)
+        return { message: t('hello', { name: 'h3' }) }
+      }),
+    )
+
+    const res = await request.get('/?locale=ja')
+    expect(res.body).toEqual({ message: 'こんにちは, h3' })
+  })
+
+  test('async', async () => {
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+    const loader = (path: string) => import(path).then((m) => m.default || m)
+    const messages: Record<string, () => ReturnType<typeof loader>> = {
+      en: () => loader('./fixtures/en.json'),
+      ja: () => loader('./fixtures/ja.json'),
+    }
+
+    // async locale detector
+    const localeDetector = async (
+      event: H3Event,
+      i18n: CoreContext<string, DefineLocaleMessage>,
+    ) => {
+      const locale = getQueryLocale(event).toString()
+      await sleep(100)
+      const loader = messages[locale]
+      if (loader && !i18n.messages[locale]) {
+        const message = await loader()
+        i18n.messages[locale] = message
+      }
+      return locale
+    }
+
+    const middleware = defineI18nMiddleware({
+      locale: localeDetector,
+      messages: {
+        en: {
+          hello: 'hello, {name}',
+        },
+      },
+    })
+    app = createApp({ ...middleware })
+    request = supertest(toNodeListener(app))
+
+    app.use(
+      '/',
+      eventHandler(async (event) => {
+        const t = await useTranslation(event)
+        return { message: t('hello', { name: 'h3' }) }
+      }),
+    )
+
+    const translated: Record<string, { message: string }> = {
       en: {
-        hello: 'hello, {name}',
+        message: 'hello, h3',
       },
       ja: {
-        hello: 'こんにちは, {name}',
+        message: 'こんにちは, h3',
       },
-    },
+    }
+    for (const locale of ['en', 'ja']) {
+      const res = await request.get(`/?locale=${locale}`)
+      expect(res.body).toEqual(translated[locale])
+    }
   })
-  app = createApp({ ...middleware })
-  request = supertest(toNodeListener(app))
-
-  app.use(
-    '/',
-    eventHandler((event) => {
-      const t = useTranslation(event)
-      return { message: t('hello', { name: 'h3' }) }
-    }),
-  )
-
-  const res = await request.get('/?locale=ja')
-  expect(res.body).toEqual({ message: 'こんにちは, h3' })
 })
