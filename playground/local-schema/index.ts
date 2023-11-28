@@ -22,11 +22,11 @@ const app = createApp({ ...middleware })
 const router = createRouter()
 router.get(
   '/',
-  eventHandler((event) => {
+  eventHandler(async (event) => {
     type ResourceSchema = {
       hello: string
     }
-    const t = useTranslation<ResourceSchema>(event)
+    const t = await useTranslation<ResourceSchema>(event)
     return t('hello', { name: 'h3' })
   }),
 )

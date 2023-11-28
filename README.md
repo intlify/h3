@@ -88,15 +88,9 @@ example for detecting locale from url query:
 import { defineI18nMiddleware, getQueryLocale } from '@intlify/h3'
 import type { H3Event } from 'h3'
 
-const DEFAULT_LOCALE = 'en'
-
 // define custom locale detector
 const localeDetector = (event: H3Event): string => {
-  try {
-    return getQueryLocale(event).toString()
-  } catch () {
-    return DEFAULT_LOCALE
-  }
+  return getQueryLocale(event).toString()
 }
 
 const middleware = defineI18nMiddleware({
@@ -107,9 +101,49 @@ const middleware = defineI18nMiddleware({
 })
 ```
 
+You can make that function asynchronous. This is useful when loading resources along with locale detection.
+
+> [!NOTE]
+> The case which a synchronous function returns a promise is not supported. you need to use `async function`.
+
+```ts
+import { defineI18nMiddleware, getQueryLocale } from '@intlify/h3'
+import type { DefineLocaleMessage } from '@intlify/h3'
+import type { H3Event } from 'h3'
+
+const loader = (path: string) => import(path).then((m) => m.default || m)
+const messages: Record<string, () => ReturnType<typeof loader>> = {
+  en: () => loader('./locales/en.json'),
+  ja: () => loader('./locales/ja.json'),
+}
+
+// define custom locale detector and lazy loading
+const localeDetector = async (event: H3Event, i18n: CoreContext<string, DefineLocaleMessage>): Promise<string> => {
+  // detect locale
+  const locale = getCookieLocale(event).toString()
+
+  // resource lazy loading
+  const loader = messages[locale]
+  if (loader && !i18n.messages[locale]) {
+    const message = await loader()
+    i18n.messages[locale] = message
+  }
+
+  return locale
+}
+
+const middleware = defineI18nMiddleware({
+  // set your custom locale detector
+  locale: localeDetector,
+  // something options
+  // ...
+})
+```
+
+
 ## 🧩 Type-safe resources
 
-> [!WARNING]  
+> [!WARNING]
 > **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
 > We would like to get feedback from you 🙂.
 
@@ -174,7 +208,7 @@ If you are using [Visual Studio Code](https://code.visualstudio.com/) as an edit
 
 ## 🖌️ Resource keys completion
 
-> [!WARNING]  
+> [!WARNING]
 > **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
 > We would like to get feedback from you 🙂.
 

@@ -113,18 +113,21 @@ export function defineI18nMiddleware<
     staticLocaleDetector = () => orgLocale
   }
 
-  const getLocaleDetector = (event: H3Event): LocaleDetector => {
+  const getLocaleDetector = (
+    event: H3Event,
+    i18n: CoreContext,
+  ): LocaleDetector => {
     // deno-fmt-ignore
     return typeof orgLocale === 'function'
-      ? orgLocale.bind(null, event)
+      ? orgLocale.bind(null, event, i18n)
       : staticLocaleDetector != null
-        ? staticLocaleDetector.bind(null, event)
+        ? staticLocaleDetector.bind(null, event, i18n)
         : detectLocaleFromAcceptLanguageHeader.bind(null, event)
   }
 
   return {
     onRequest(event: H3Event) {
-      i18n.locale = getLocaleDetector(event)
+      i18n.locale = getLocaleDetector(event, i18n as CoreContext)
       event.context.i18n = i18n as CoreContext
     },
     onAfterResponse(event: H3Event) {
@@ -319,7 +322,7 @@ interface TranslationFunction<
  *
  * @param {H3Event} event - A h3 event
  *
- * @returns {TranslationFunction} Return a translation function, which can be translated with i18n resource messages
+ * @returns {Promise<TranslationFunction>} Return a translation function, which can be translated with i18n resource messages
  *
  * @example
  * ```js
@@ -328,21 +331,26 @@ interface TranslationFunction<
  * const router = createRouter()
  * router.get(
  *   '/',
- *   eventHandler((event) => {
- *     const t = useTranslation(event)
+ *   eventHandler(async (event) => {
+ *     const t = await useTranslation(event)
  *     return t('hello', { name: 'h3' })
  *   }),
  * )
  * ```
  */
-export function useTranslation<
+export async function useTranslation<
   Schema extends Record<string, any> = {},
   Event extends H3Event = H3Event,
->(event: Event): TranslationFunction<Schema, DefineLocaleMessage> {
+>(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   if (event.context.i18n == null) {
     throw new Error(
       'middleware not initialized, please setup `onRequest` and `onAfterResponse` options of `createApp` with the middleware obtained with `defineI18nMiddleware`',
     )
+  }
+
+  const localeDetector = event.context.i18n.locale as unknown as LocaleDetector
+  if (localeDetector.constructor.name === 'AsyncFunction') {
+    event.context.i18n.locale = await localeDetector(event)
   }
 
   function translate(key: string, ...args: unknown[]): string {
