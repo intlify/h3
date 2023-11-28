@@ -4,7 +4,7 @@ import { createCoreContext, NOT_REOSLVED, translate as _translate } from '@intli
 import { getHeaderLocale } from '@intlify/utils/h3'
 
 export * from '@intlify/utils/h3'
-export { CoreContext } from '@intlify/core'
+export type { CoreContext } from '@intlify/core'
 
 import type { AppOptions, H3Event } from 'h3'
 import type {
