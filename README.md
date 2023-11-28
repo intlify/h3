@@ -67,9 +67,9 @@ const app = createApp({ ...middleware })
 const router = createRouter()
 router.get(
   '/',
-  eventHandler((event) => {
+  eventHandler(async (event) => {
     // use `useTranslation` in event handler
-    const t = useTranslation(event)
+    const t = await useTranslation(event)
     return t('hello', { name: 'h3' })
   }),
 )
@@ -233,12 +233,12 @@ the part of example:
 const router = createRouter()
 router.get(
   '/',
-  eventHandler((event) => {
+  eventHandler(async (event) => {
     type ResourceSchema = {
       hello: string
     }
     // set resource schema as type parameter
-    const t = useTranslation<ResourceSchema>(event)
+    const t = await useTranslation<ResourceSchema>(event)
     // you can completion when you type `t('`
     return t('hello', { name: 'h3' })
   }),
@@ -268,8 +268,8 @@ declare module '@intlify/h3' {
 const router = createRouter()
 router.get(
   '/',
-  eventHandler((event) => {
-    const t = useTranslation(event)
+  eventHandler(async (event) => {
+    const t = await useTranslation(event)
     // you can completion when you type `t('`
     return t('hello', { name: 'h3' })
   }),
@@ -287,11 +287,11 @@ The advantage of this way is that it is not necessary to specify the resource sc
 ### Utilities
 
 `@intlify/h3` composable utilities accept event (from
-`eventHandler((event) => {})`) as their first argument. (Exclud `useTranslation`) return the [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
+`eventHandler((event) => {})`) as their first argument. (Exclude `useTranslation`) return the [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
 
 ### Translations
 
-- `useTranslation(event)`: use translation function
+- `useTranslation(event)`: use translation function, asynchronous
 
 ### Headers
 
