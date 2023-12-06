@@ -297,16 +297,21 @@ The advantage of this way is that it is not necessary to specify the resource sc
 
 - `getHeaderLocale(event, options)`: get locale from `accept-language` header
 - `getHeaderLocales(event, options)`: get some locales from `accept-language` header
+- `tryHeaderLocale(event, options)`: try to get locale from `accept-language` header
+- `tryHeaderLocales(event, options)`: try to get some locales from `accept-language` header
 
 ### Cookies
 
 - `getCookieLocale(event, options)`: get locale from cookie
+- `tryCookieLocale(event, options)`: try to get locale from cookie
 - `setCookieLocale(event, options)`: set locale to cookie
 
 ### Misc
 
 - `getPathLocale(event, options)`: get locale from path
+- `tryPathLocale(event, options)`: try to get locale from path
 - `getQueryLocale(event, options)`: get locale from query
+- `tryQueryLocale(event, options)`: try to get locale from query
 
 ## Helpers
 
