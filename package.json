@@ -83,6 +83,6 @@
   },
   "dependencies": {
     "@intlify/core": "^9.8.0",
-    "@intlify/utils": "^0.12.0"
+    "@intlify/utils": "^0.13.0"
   }
 }
