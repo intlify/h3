@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { spawnSync } from 'child_process'
 
 const { status } = spawnSync('which', ['deno'], { stdio: 'ignore' })

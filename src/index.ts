@@ -191,7 +191,6 @@ export const detectLocaleFromAcceptLanguageHeader = (
  * }
  * ```
  */
-// deno-lint-ignore no-empty-interface
 export interface DefineLocaleMessage extends LocaleMessage<string> {} // eslint-disable-line @typescript-eslint/no-empty-interface
 
 type ResolveResourceKeys<
