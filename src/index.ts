@@ -1,6 +1,12 @@
 // deno-lint-ignore-file no-explicit-any ban-types
 
-import { createCoreContext, NOT_REOSLVED, translate as _translate } from '@intlify/core'
+import {
+  createCoreContext,
+  NOT_REOSLVED,
+  // @ts-expect-error internal function
+  parseTranslateArgs,
+  translate as _translate,
+} from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils/h3'
 
 export * from '@intlify/utils/h3'
@@ -27,6 +33,7 @@ import type {
 declare module 'h3' {
   interface H3EventContext {
     i18n?: CoreContext
+    i18nLocale?: LocaleDetector
   }
 }
 
@@ -129,7 +136,8 @@ export function defineI18nMiddleware<
 
   return {
     onRequest(event: H3Event) {
-      i18n.locale = getLocaleDetector(event, i18n as CoreContext)
+      event.context.i18nLocale = getLocaleDetector(event, i18n as CoreContext)
+      i18n.locale = event.context.i18nLocale
       event.context.i18n = i18n as CoreContext
     },
     onAfterResponse(event: H3Event) {
@@ -349,16 +357,25 @@ export async function useTranslation<
     )
   }
 
-  const localeDetector = event.context.i18n.locale as unknown as LocaleDetector
+  const localeDetector = event.context.i18nLocale as unknown as LocaleDetector
+  let locale: string
   if (localeDetector.constructor.name === 'AsyncFunction') {
-    event.context.i18n.locale = await localeDetector(event)
+    locale = await localeDetector(event)
+    event.context.i18n.locale = locale
   }
 
   function translate(key: string, ...args: unknown[]): string {
+    const [_, options] = parseTranslateArgs(key, ...args)
+    const [arg2] = args
     const result = Reflect.apply(_translate, null, [
       event.context.i18n!,
       key,
-      ...args,
+      arg2,
+      {
+        // bind to request locale
+        locale,
+        ...options,
+      },
     ])
     return NOT_REOSLVED === result ? key : result as string
   }
