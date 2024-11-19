@@ -33,7 +33,7 @@ import type {
 declare module 'h3' {
   interface H3EventContext {
     i18n?: CoreContext
-    i18nLocale?: LocaleDetector
+    _i18nLocale?: LocaleDetector
   }
 }
 
@@ -136,8 +136,8 @@ export function defineI18nMiddleware<
 
   return {
     onRequest(event: H3Event) {
-      event.context.i18nLocale = getLocaleDetector(event, i18n as CoreContext)
-      i18n.locale = event.context.i18nLocale
+      event.context._i18nLocale = getLocaleDetector(event, i18n as CoreContext)
+      i18n.locale = event.context._i18nLocale
       event.context.i18n = i18n as CoreContext
     },
     onAfterResponse(event: H3Event) {
@@ -357,7 +357,7 @@ export async function useTranslation<
     )
   }
 
-  const localeDetector = event.context.i18nLocale as unknown as LocaleDetector
+  const localeDetector = event.context._i18nLocale as unknown as LocaleDetector
   let locale: string
   if (localeDetector.constructor.name === 'AsyncFunction') {
     locale = await localeDetector(event)

@@ -74,7 +74,7 @@ describe('useTranslation', () => {
     // @ts-ignore ignore type error because this is test
     context.locale = bindLocaleDetector
     // @ts-ignore ignore type error because this is test
-    eventMock.context.i18nLocale = bindLocaleDetector
+    eventMock.context._i18nLocale = bindLocaleDetector
 
     // test `useTranslation`
     const t = await useTranslation(eventMock)
