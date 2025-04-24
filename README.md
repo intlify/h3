@@ -33,7 +33,7 @@ pnpm add @intlify/h3
 bun add @intlify/h3
 ```
 
-## 🚀 Usage
+## 🚀 Usage (h3)
 
 ```ts
 import { createServer } from 'node:http'
@@ -76,6 +76,36 @@ router.get(
 
 app.use(router)
 createServer(toNodeListener(app)).listen(3000)
+```
+
+## 🚀 Usage (Nitro)
+For usage with [Nitro](https://nitro.build/) you need to create a plugin instead, create file `plugins/i18n.ts`:
+
+```ts
+import { defineNitroPlugin } from 'nitropack/runtime';
+import {
+  defineI18nMiddleware,
+  detectLocaleFromAcceptLanguageHeader,
+} from '@intlify/h3';
+
+export default defineNitroPlugin((nitroApp) => {
+  const { onRequest, onAfterResponse } = defineI18nMiddleware({
+    // detect locale with `accept-language` header
+    locale: detectLocaleFromAcceptLanguageHeader,
+    // resource messages
+    messages: {
+      en: {
+        hello: 'Hello {name}!',
+      },
+      ja: {
+        hello: 'こんにちは、{name}！',
+      },
+    },
+  });
+
+  nitroApp.hooks.hook('request', onRequest);
+  nitroApp.hooks.hook('afterResponse', onAfterResponse);
+});
 ```
 
 ## 🛠️ Custom locale detection
