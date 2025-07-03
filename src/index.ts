@@ -2,7 +2,7 @@
 
 import {
   createCoreContext,
-  NOT_REOSLVED,
+  NOT_RESOLVED,
   // @ts-expect-error internal function
   parseTranslateArgs,
   translate as _translate,
@@ -377,7 +377,7 @@ export async function useTranslation<
         ...options,
       },
     ])
-    return NOT_REOSLVED === result ? key : result as string
+    return NOT_RESOLVED === result ? key : result as string
   }
 
   return translate as TranslationFunction<Schema, DefineLocaleMessage>
