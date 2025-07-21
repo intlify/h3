@@ -10,12 +10,11 @@ import {
 } from '../src/index.ts'
 
 import type { App, H3Event } from 'h3'
-import type { SuperTest, Test } from 'supertest'
 import type { CoreContext } from '@intlify/core'
 import type { DefineLocaleMessage } from '../src/index.ts'
 
 let app: App
-let request: SuperTest<Test>
+let request: ReturnType<typeof supertest>
 
 afterEach(() => {
   vi.resetAllMocks()

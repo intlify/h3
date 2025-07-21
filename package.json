@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.6.0",
-    "@types/supertest": "^2.0.12",
+    "@types/supertest": "^6.0.0",
     "@vitest/coverage-v8": "^3.0.0",
     "bumpp": "^10.0.0",
     "gh-changelogen": "^0.2.8",
