@@ -64,7 +64,7 @@
 
 You will need to install the below JavaScript runtime:
 
-- [Node.js](http://nodejs.org) **version 18+**
+- [Node.js](http://nodejs.org) **version 20+**
 - [Bun](https://bun.sh/) **version 1.0+**
 - [Deno](https://deno.com/) **version 1.36+**
 
