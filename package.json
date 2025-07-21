@@ -85,5 +85,5 @@
     "@intlify/core": "^10.0.3",
     "@intlify/utils": "^0.13.0"
   },
-  "packageManager": "npm@11.4.2"
+  "packageManager": "bun@1.2.19"
 }
