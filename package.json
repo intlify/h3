@@ -78,7 +78,7 @@
     "lint-staged": "^16.0.0",
     "supertest": "^7.0.0",
     "typescript": "^5.3.0",
-    "unbuild": "^2.0.0",
+    "unbuild": "^3.0.0",
     "vitest": "^3.0.0"
   },
   "dependencies": {
