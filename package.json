@@ -82,7 +82,7 @@
     "vitest": "^3.0.0"
   },
   "dependencies": {
-    "@intlify/core": "^10.0.3",
+    "@intlify/core": "^11.0.0",
     "@intlify/utils": "^0.13.0"
   },
   "packageManager": "bun@1.2.19"
