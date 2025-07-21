@@ -85,5 +85,5 @@
     "@intlify/core": "^10.0.3",
     "@intlify/utils": "^0.13.0"
   },
-  "packageManager": "npm@9.5.1+sha512.33350b9bd78458fb8fc879910718dc2a6e3b28a6184f582d7953973e53496df75a5cdb69fac3b8cb65f7bf9837ef92ae7440062550d50a816e93b6c59eebaf36"
+  "packageManager": "npm@11.4.2"
 }
