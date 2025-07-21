@@ -75,7 +75,7 @@
     "bumpp": "^10.0.0",
     "gh-changelogen": "^0.2.8",
     "h3": "^1.11.0",
-    "lint-staged": "^15.0.2",
+    "lint-staged": "^16.0.0",
     "supertest": "^6.3.3",
     "typescript": "^5.3.0",
     "unbuild": "^2.0.0",
