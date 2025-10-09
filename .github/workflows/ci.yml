@@ -26,7 +26,7 @@ jobs:
       - name: Setup deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.x
+          deno-version: 2.x
 
       - name: Lint codes
         run: deno lint
@@ -47,7 +47,7 @@ jobs:
       - name: Setup deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.x
+          deno-version: 2.x
 
       - name: Setup bun
         uses: oven-sh/setup-bun@v2
@@ -82,7 +82,7 @@ jobs:
       - name: Setup deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.x
+          deno-version: 2.x
 
       - name: Setup bun
         uses: oven-sh/setup-bun@v2
@@ -119,7 +119,7 @@ jobs:
       - name: Setup deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.x
+          deno-version: 2.x
 
       - name: Setup bun
         uses: oven-sh/setup-bun@v2
