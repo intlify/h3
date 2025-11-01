@@ -13,7 +13,7 @@ import {
   translate as _translate,
   createCoreContext,
   NOT_REOSLVED,
-  // @ts-expect-error internal function
+  // @ts-expect-error -- NOTE(kazupon): internal function
   parseTranslateArgs
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils/h3'
@@ -357,8 +357,10 @@ export async function useTranslation<
   }
 
   function translate(key: string, ...args: unknown[]): string {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): ignore any case
     const [_, options] = parseTranslateArgs(key, ...args)
     const [arg2] = args
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- NOTE(kazupon): ignore any case
     const result = Reflect.apply(_translate, null, [
       event.context.i18n!,
       key,

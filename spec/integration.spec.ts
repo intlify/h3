@@ -1,7 +1,7 @@
-import { afterEach, describe, expect, test, vi } from 'vitest'
-import { createApp, eventHandler, toNodeListener } from 'h3'
 import { getQueryLocale } from '@intlify/utils/h3'
+import { createApp, eventHandler, toNodeListener } from 'h3'
 import supertest from 'supertest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import {
   defineI18nMiddleware,
@@ -9,8 +9,8 @@ import {
   useTranslation
 } from '../src/index.ts'
 
-import type { App, H3Event } from 'h3'
 import type { CoreContext } from '@intlify/core'
+import type { App, H3Event } from 'h3'
 import type { DefineLocaleMessage } from '../src/index.ts'
 
 let app: App

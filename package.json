@@ -64,10 +64,9 @@
     "play:basic": "pnpx tsx ./playground/basic/index.ts",
     "prepare": "git config --local core.hooksPath .githooks",
     "release": "bumpp --commit \"release: v%s\" --push --tag",
-    "test": "pnpm run test:type && pnpm run test:unit",
+    "test": "pnpm run test:unit",
     "test:coverage": "pnpm test --reporter verbose --coverage",
-    "test:type": "vitest run --typecheck",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run --typecheck"
   },
   "dependencies": {
     "@intlify/core": "^11.1.12",
@@ -75,8 +74,8 @@
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.1",
-    "@eslint/markdown": "latest",
-    "@kazupon/eslint-config": "^0.37.2",
+    "@eslint/markdown": "^7.5.0",
+    "@kazupon/eslint-config": "^0.38.0",
     "@kazupon/prettier-config": "^0.1.1",
     "@types/node": "^20.19.24",
     "@types/supertest": "^6.0.3",

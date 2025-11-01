@@ -58,9 +58,6 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
     }
   }),
   typescript({
-    parserOptions: {
-      tsconfigRootDir: import.meta.dirname
-    },
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off'
     }
@@ -86,6 +83,7 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
     'pnpm-lock.yaml',
     'playground/**',
     'CHANGELOG.md',
+    'spec/**',
     '.devcontainer/**',
     '.github/FUNDING.yml'
   ]) as Linter.Config
