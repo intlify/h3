@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build pacakge
+        run: pnpm build
+
       - name: Extract version tag
         if: startsWith( github.ref, 'refs/tags/v' )
         uses: jungwinter/split@7f51d99e7cc1f147f6f99be75acf5e641930af88 # v2.1.0
@@ -44,10 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate changelog
-        run: |
-          git restore --source=HEAD --staged --worktree -- package.json bun.lockb
-          pnpm run build
-          pnpm run changelog -- --tag=${{ steps.split.outputs._2 }}
+        run: pnpm run changelog -- --tag=${{ steps.split.outputs._2 }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
