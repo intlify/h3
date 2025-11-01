@@ -5,3 +5,4 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - eslint
   - '@eslint/js'
+  - '@typescript/native-preview'
