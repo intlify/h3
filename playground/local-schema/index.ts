@@ -1,5 +1,5 @@
+import { createApp, createRouter, eventHandler, toNodeListener } from 'h3'
 import { createServer } from 'node:http'
-import { createApp, createRouter, eventHandler, toNodeListener, use } from 'h3'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
