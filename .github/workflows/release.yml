@@ -13,20 +13,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout codes
-        uses: actions/checkout@v5
+        uses: r7kamura/github-label-sync-action@061649dd3b80eb5bafad0316466f72962e62c300 # v0.1.0
         with:
           ref: ${{ github.head_ref }}
 
       - name: Setup deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@e95548e56dfa95d4e1a28d6f422fafe75c4c26fb # v2.0.3
         with:
-          deno-version: 2.x
+          deno-version: v2.5
 
       - name: Setup bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
+        with:
+          bun-version: v1.3
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: 20
 
@@ -35,7 +37,7 @@ jobs:
 
       - name: Extract version tag
         if: startsWith( github.ref, 'refs/tags/v' )
-        uses: jungwinter/split@v2
+        uses: jungwinter/split@7f51d99e7cc1f147f6f99be75acf5e641930af88 # v2.1.0
         id: split
         with:
           msg: ${{ github.ref }}
@@ -56,7 +58,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit changelog
-        uses: stefanzweifel/git-auto-commit-action@v7
+        uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 # v7.0.0
         with:
           branch: main
           file_pattern: '*.md'
