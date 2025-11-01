@@ -42,7 +42,6 @@
 - Make sure `npm test` passes. (see [development setup](#development-setup))
 
 - If adding new feature:
-
   - Add accompanying test case.
   - Provide convincing reason to add this feature. Ideally you should open a
     suggestion issue first and have it greenlighted before working on it.

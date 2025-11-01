@@ -7,21 +7,27 @@ import type { H3Event } from 'h3'
  * you can define global resource schema extending with `declare module`
  */
 declare module './index.ts' {
+  /**
+   * Define your locale message schema here
+   */
   export interface DefineLocaleMessage {
+    /**
+     * Define your locale message schema here
+     */
     test: string
   }
 }
 
 test('defineI18nMiddleware', () => {
-  const en = {
-    hello: 'worked',
+  const _en = {
+    hello: 'worked'
   }
-  type ResourceSchema = typeof en
+  type ResourceSchema = typeof _en
   defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
     messages: {
       en: { hello: 'world' },
-      ja: { hello: '世界' },
-    },
+      ja: { hello: '世界' }
+    }
   })
 })
 
@@ -29,22 +35,22 @@ test('translation function', async () => {
   const eventMock = {
     node: {
       req: {
-        method: 'GET',
-      },
+        method: 'GET'
+      }
     },
-    context: {},
+    context: {}
   } as H3Event
 
-  const resources = {
+  const _resources = {
     foo: 'foo',
     bar: {
       buz: {
-        baz: 'baz',
-      },
-    },
+        baz: 'baz'
+      }
+    }
   }
 
-  const t = await useTranslation<typeof resources>(eventMock)
+  const t = await useTranslation<typeof _resources>(eventMock)
   expectTypeOf<string>(t('test')).toMatchTypeOf<string>()
   expectTypeOf<string>(t('foo')).toMatchTypeOf<string>()
   expectTypeOf<string>(t('bar.buz.baz')).toMatchTypeOf<string>()

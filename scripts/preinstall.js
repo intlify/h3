@@ -1,12 +1,11 @@
+import { spawnSync } from 'node:child_process'
 import process from 'node:process'
-import { spawnSync } from 'child_process'
 
 const { status } = spawnSync('which', ['deno'], { stdio: 'ignore' })
 
 if (status) {
   console.warn(
-    `\u001b[33mThis repository requires using deno` +
-      ` for scripts to work properly.\u001b[39m\n`,
+    `\u001B[33mThis repository requires using deno` + ` for scripts to work properly.\u001B[39m\n`
   )
-  process.exit(1)
+  process.exit(1) // eslint-disable-line unicorn/no-process-exit -- NOTE(kazupon): exit script
 }

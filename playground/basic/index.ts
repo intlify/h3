@@ -3,19 +3,19 @@ import { createApp, createRouter, eventHandler, toNodeListener } from 'h3'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
-  useTranslation,
+  useTranslation
 } from '../../src/index.ts' // `@inlify/h3`
 
 const middleware = defineI18nMiddleware({
   locale: detectLocaleFromAcceptLanguageHeader,
   messages: {
     en: {
-      hello: 'hello, {name}',
+      hello: 'hello, {name}'
     },
     ja: {
-      hello: 'こんにちは, {name}',
-    },
-  },
+      hello: 'こんにちは, {name}'
+    }
+  }
 })
 
 const app = createApp({ ...middleware })
@@ -23,10 +23,10 @@ const app = createApp({ ...middleware })
 const router = createRouter()
 router.get(
   '/',
-  eventHandler(async (event) => {
+  eventHandler(async event => {
     const t = await useTranslation(event)
     return t('hello', { name: 'h3' })
-  }),
+  })
 )
 
 app.use(router)

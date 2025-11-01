@@ -6,7 +6,7 @@ import supertest from 'supertest'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
-  useTranslation,
+  useTranslation
 } from '../src/index.ts'
 
 import type { App, H3Event } from 'h3'
@@ -25,28 +25,25 @@ test('translation', async () => {
     locale: detectLocaleFromAcceptLanguageHeader,
     messages: {
       en: {
-        hello: 'hello, {name}',
+        hello: 'hello, {name}'
       },
       ja: {
-        hello: 'こんにちは, {name}',
-      },
-    },
+        hello: 'こんにちは, {name}'
+      }
+    }
   })
   app = createApp({ ...middleware })
   request = supertest(toNodeListener(app))
 
   app.use(
     '/',
-    eventHandler(async (event) => {
+    eventHandler(async event => {
       const t = await useTranslation(event)
       return { message: t('hello', { name: 'h3' }) }
-    }),
+    })
   )
 
-  const res = await request.get('/').set(
-    'accept-language',
-    'en;q=0.9,ja;q=0.8',
-  )
+  const res = await request.get('/').set('accept-language', 'en;q=0.9,ja;q=0.8')
   expect(res.body).toEqual({ message: 'hello, h3' })
 })
 
@@ -61,22 +58,22 @@ describe('custom locale detection', () => {
       locale: localeDetector,
       messages: {
         en: {
-          hello: 'hello, {name}',
+          hello: 'hello, {name}'
         },
         ja: {
-          hello: 'こんにちは, {name}',
-        },
-      },
+          hello: 'こんにちは, {name}'
+        }
+      }
     })
     app = createApp({ ...middleware })
     request = supertest(toNodeListener(app))
 
     app.use(
       '/',
-      eventHandler(async (event) => {
+      eventHandler(async event => {
         const t = await useTranslation(event)
         return { message: t('hello', { name: 'h3' }) }
-      }),
+      })
     )
 
     const res = await request.get('/?locale=ja')
@@ -84,18 +81,18 @@ describe('custom locale detection', () => {
   })
 
   test('async', async () => {
-    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-    const loader = (path: string) => import(path).then((m) => m.default || m)
+    const loader = (path: string) => import(path).then(m => m.default || m)
     const messages: Record<string, () => ReturnType<typeof loader>> = {
       en: () => loader('./fixtures/en.json'),
-      ja: () => loader('./fixtures/ja.json'),
+      ja: () => loader('./fixtures/ja.json')
     }
 
     // async locale detector
     const localeDetector = async (
       event: H3Event,
-      i18n: CoreContext<string, DefineLocaleMessage>,
+      i18n: CoreContext<string, DefineLocaleMessage>
     ) => {
       const locale = getQueryLocale(event).toString()
       await sleep(100)
@@ -111,28 +108,28 @@ describe('custom locale detection', () => {
       locale: localeDetector,
       messages: {
         en: {
-          hello: 'hello, {name}',
-        },
-      },
+          hello: 'hello, {name}'
+        }
+      }
     })
     app = createApp({ ...middleware })
     request = supertest(toNodeListener(app))
 
     app.use(
       '/',
-      eventHandler(async (event) => {
+      eventHandler(async event => {
         const t = await useTranslation(event)
         return { message: t('hello', { name: 'h3' }) }
-      }),
+      })
     )
 
     const translated: Record<string, { message: string }> = {
       en: {
-        message: 'hello, h3',
+        message: 'hello, h3'
       },
       ja: {
-        message: 'こんにちは, h3',
-      },
+        message: 'こんにちは, h3'
+      }
     }
     for (const locale of ['en', 'ja']) {
       const res = await request.get(`/?locale=${locale}`)
@@ -140,18 +137,18 @@ describe('custom locale detection', () => {
     }
   })
   test('async parallel', async () => {
-    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-    const loader = (path: string) => import(path).then((m) => m.default || m)
+    const loader = (path: string) => import(path).then(m => m.default || m)
     const messages: Record<string, () => ReturnType<typeof loader>> = {
       en: () => loader('./fixtures/en.json'),
-      ja: () => loader('./fixtures/ja.json'),
+      ja: () => loader('./fixtures/ja.json')
     }
 
     // async locale detector
     const localeDetector = async (
       event: H3Event,
-      i18n: CoreContext<string, DefineLocaleMessage>,
+      i18n: CoreContext<string, DefineLocaleMessage>
     ) => {
       const locale = getQueryLocale(event).toString()
       await sleep(100)
@@ -167,36 +164,36 @@ describe('custom locale detection', () => {
       locale: localeDetector,
       messages: {
         en: {
-          hello: 'hello, {name}',
-        },
-      },
+          hello: 'hello, {name}'
+        }
+      }
     })
     app = createApp({ ...middleware })
     request = supertest(toNodeListener(app))
 
     app.use(
       '/',
-      eventHandler(async (event) => {
+      eventHandler(async event => {
         await sleep(100)
         const t = await useTranslation(event)
         await sleep(100)
         return { message: t('hello', { name: 'h3' }) }
-      }),
+      })
     )
 
     const translated: Record<string, { message: string }> = {
       en: {
-        message: 'hello, h3',
+        message: 'hello, h3'
       },
       ja: {
-        message: 'こんにちは, h3',
-      },
+        message: 'こんにちは, h3'
+      }
     }
     // request in parallel
     const resList = await Promise.all(
-      ['en', 'ja'].map((locale) =>
+      ['en', 'ja'].map(locale =>
         request.get(`/?locale=${locale}`).then((res: { body: string }) => res.body)
-      ),
+      )
     )
     expect(resList).toEqual([translated['en'], translated['ja']])
   })

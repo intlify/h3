@@ -3,8 +3,8 @@ import { defineBuildConfig } from 'unbuild'
 export default defineBuildConfig({
   declaration: true,
   rollup: {
-    emitCJS: true,
+    emitCJS: true
   },
   entries: ['./src/index.ts'],
-  externals: ['h3'],
+  externals: ['h3']
 })

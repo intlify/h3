@@ -3,7 +3,7 @@ import { createApp, createRouter, eventHandler, toNodeListener, use } from 'h3'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
-  useTranslation,
+  useTranslation
 } from '../../src/index.ts' // in your project, `import { ... } from '@inlify/h3'`
 
 import en from './locales/en.ts'
@@ -13,8 +13,8 @@ const middleware = defineI18nMiddleware({
   locale: detectLocaleFromAcceptLanguageHeader,
   messages: {
     en,
-    ja,
-  },
+    ja
+  }
 })
 
 const app = createApp({ ...middleware })
@@ -22,13 +22,13 @@ const app = createApp({ ...middleware })
 const router = createRouter()
 router.get(
   '/',
-  eventHandler(async (event) => {
+  eventHandler(async event => {
     type ResourceSchema = {
       hello: string
     }
     const t = await useTranslation<ResourceSchema>(event)
     return t('hello', { name: 'h3' })
-  }),
+  })
 )
 
 app.use(router)

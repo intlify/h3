@@ -4,7 +4,7 @@ import { createCoreContext } from '@intlify/core'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
-  useTranslation,
+  useTranslation
 } from './index.ts'
 
 import type { H3Event } from 'h3'
@@ -16,10 +16,10 @@ test('detectLocaleFromAcceptLanguageHeader', () => {
       req: {
         method: 'GET',
         headers: {
-          'accept-language': 'en-US,en;q=0.9,ja;q=0.8',
-        },
-      },
-    },
+          'accept-language': 'en-US,en;q=0.9,ja;q=0.8'
+        }
+      }
+    }
   } as H3Event
   expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
 })
@@ -29,12 +29,12 @@ test('defineI18nMiddleware', () => {
     locale: detectLocaleFromAcceptLanguageHeader,
     messages: {
       en: {
-        hello: 'hello, {name}',
+        hello: 'hello, {name}'
       },
       ja: {
-        hello: 'こんにちは, {name}',
-      },
-    },
+        hello: 'こんにちは, {name}'
+      }
+    }
   })
   expect(middleware.onRequest).toBeDefined()
   expect(middleware.onAfterResponse).toBeDefined()
@@ -49,25 +49,25 @@ describe('useTranslation', () => {
       locale: detectLocaleFromAcceptLanguageHeader,
       messages: {
         en: {
-          hello: 'hello, {name}',
+          hello: 'hello, {name}'
         },
         ja: {
-          hello: 'こんにちは, {name}',
-        },
-      },
+          hello: 'こんにちは, {name}'
+        }
+      }
     })
     const eventMock = {
       node: {
         req: {
           method: 'GET',
           headers: {
-            'accept-language': 'ja,en',
-          },
-        },
+            'accept-language': 'ja,en'
+          }
+        }
       },
       context: {
-        i18n: context as CoreContext,
-      },
+        i18n: context as CoreContext
+      }
     } as H3Event
     const locale = context.locale as unknown
     const bindLocaleDetector = (locale as LocaleDetector).bind(null, eventMock)
@@ -87,11 +87,11 @@ describe('useTranslation', () => {
         req: {
           method: 'GET',
           headers: {
-            'accept-language': 'ja,en',
-          },
-        },
+            'accept-language': 'ja,en'
+          }
+        }
       },
-      context: {},
+      context: {}
     } as H3Event
 
     await expect(() => useTranslation(eventMock)).rejects.toThrowError()

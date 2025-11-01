@@ -14,8 +14,8 @@ const middleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
   messages: {
     en: { hello: 'Hello, {name}' },
     // you can see the type error, when you will comment out the below `ja` resource
-    ja: { hello: 'こんにちは、{name}' },
-  },
+    ja: { hello: 'こんにちは、{name}' }
+  }
   // something options
   // ...
 })

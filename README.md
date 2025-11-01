@@ -41,7 +41,7 @@ import { createApp, createRouter, eventHandler, toNodeListener } from 'h3'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
-  useTranslation,
+  useTranslation
 } from '@intlify/h3'
 
 // define middleware with vue-i18n like options
@@ -51,12 +51,12 @@ const middleware = defineI18nMiddleware({
   // resource messages
   messages: {
     en: {
-      hello: 'Hello {name}!',
+      hello: 'Hello {name}!'
     },
     ja: {
-      hello: 'こんにちは、{name}！',
-    },
-  },
+      hello: 'こんにちは、{name}！'
+    }
+  }
   // something options
   // ...
 })
@@ -67,11 +67,11 @@ const app = createApp({ ...middleware })
 const router = createRouter()
 router.get(
   '/',
-  eventHandler(async (event) => {
+  eventHandler(async event => {
     // use `useTranslation` in event handler
     const t = await useTranslation(event)
     return t('hello', { name: 'h3' })
-  }),
+  })
 )
 
 app.use(router)
@@ -79,33 +79,31 @@ createServer(toNodeListener(app)).listen(3000)
 ```
 
 ## 🚀 Usage (Nitro)
+
 For usage with [Nitro](https://nitro.build/) you need to create a plugin instead, create file `plugins/i18n.ts`:
 
 ```ts
-import { defineNitroPlugin } from 'nitropack/runtime';
-import {
-  defineI18nMiddleware,
-  detectLocaleFromAcceptLanguageHeader,
-} from '@intlify/h3';
+import { defineNitroPlugin } from 'nitropack/runtime'
+import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
 
-export default defineNitroPlugin((nitroApp) => {
+export default defineNitroPlugin(nitroApp => {
   const { onRequest, onAfterResponse } = defineI18nMiddleware({
     // detect locale with `accept-language` header
     locale: detectLocaleFromAcceptLanguageHeader,
     // resource messages
     messages: {
       en: {
-        hello: 'Hello {name}!',
+        hello: 'Hello {name}!'
       },
       ja: {
-        hello: 'こんにちは、{name}！',
-      },
-    },
-  });
+        hello: 'こんにちは、{name}！'
+      }
+    }
+  })
 
-  nitroApp.hooks.hook('request', onRequest);
-  nitroApp.hooks.hook('afterResponse', onAfterResponse);
-});
+  nitroApp.hooks.hook('request', onRequest)
+  nitroApp.hooks.hook('afterResponse', onAfterResponse)
+})
 ```
 
 ## 🛠️ Custom locale detection
@@ -125,7 +123,7 @@ const localeDetector = (event: H3Event): string => {
 
 const middleware = defineI18nMiddleware({
   // set your custom locale detector
-  locale: localeDetector,
+  locale: localeDetector
   // something options
   // ...
 })
@@ -133,22 +131,29 @@ const middleware = defineI18nMiddleware({
 
 You can make that function asynchronous. This is useful when loading resources along with locale detection.
 
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
 > [!NOTE]
 > The case which a synchronous function returns a promise is not supported. you need to use `async function`.
 
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
 ```ts
-import { defineI18nMiddleware, getQueryLocale } from '@intlify/h3'
+import { defineI18nMiddleware } from '@intlify/h3'
 import type { DefineLocaleMessage } from '@intlify/h3'
 import type { H3Event } from 'h3'
 
-const loader = (path: string) => import(path).then((m) => m.default || m)
+const loader = (path: string) => import(path).then(m => m.default || m)
 const messages: Record<string, () => ReturnType<typeof loader>> = {
   en: () => loader('./locales/en.json'),
-  ja: () => loader('./locales/ja.json'),
+  ja: () => loader('./locales/ja.json')
 }
 
 // define custom locale detector and lazy loading
-const localeDetector = async (event: H3Event, i18n: CoreContext<string, DefineLocaleMessage>): Promise<string> => {
+const localeDetector = async (
+  event: H3Event,
+  i18n: CoreContext<string, DefineLocaleMessage>
+): Promise<string> => {
   // detect locale
   const locale = getCookieLocale(event).toString()
 
@@ -164,14 +169,15 @@ const localeDetector = async (event: H3Event, i18n: CoreContext<string, DefineLo
 
 const middleware = defineI18nMiddleware({
   // set your custom locale detector
-  locale: localeDetector,
+  locale: localeDetector
   // something options
   // ...
 })
 ```
 
-
 ## 🧩 Type-safe resources
+
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 > [!WARNING]
 > **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
@@ -179,6 +185,8 @@ const middleware = defineI18nMiddleware({
 
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/h3/tree/main/playground/typesafe-schema)
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can support the type-safe resources with schema using TypeScript on `defineI18nMiddleware` options.
 
@@ -202,8 +210,8 @@ type ResourceSchema = typeof en
 
 const middleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
   messages: {
-    en: { hello: 'Hello, {name}' },
-  },
+    en: { hello: 'Hello, {name}' }
+  }
   // something options
   // ...
 })
@@ -235,8 +243,9 @@ If you are using [Visual Studio Code](https://code.visualstudio.com/) as an edit
 
 ![Type-safe resources](assets/typesafe-schema.png)
 
-
 ## 🖌️ Resource keys completion
+
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 > [!WARNING]
 > **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
@@ -244,6 +253,8 @@ If you are using [Visual Studio Code](https://code.visualstudio.com/) as an edit
 
 > [!NOTE]
 > Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can completion resources key on translation function with `useTranslation`.
 
@@ -253,17 +264,22 @@ resource keys completion has twe ways.
 
 ### Type parameter for `useTranslation`
 
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/h3/tree/main/playground/local-schema)
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can `useTranslation` set the type parameter to the resource schema you want to key completion of the translation function.
 
 the part of example:
+
 ```ts
 const router = createRouter()
 router.get(
   '/',
-  eventHandler(async (event) => {
+  eventHandler(async event => {
     type ResourceSchema = {
       hello: string
     }
@@ -271,18 +287,23 @@ router.get(
     const t = await useTranslation<ResourceSchema>(event)
     // you can completion when you type `t('`
     return t('hello', { name: 'h3' })
-  }),
+  })
 )
 ```
 
 ### global resource schema with `declare module '@intlify/h3'`
 
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/h3/tree/main/playground/global-schema)
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can do resource key completion with the translation function using the typescript `declare module`.
 
 the part of example:
+
 ```ts
 import en from './locales/en.ts'
 
@@ -298,17 +319,15 @@ declare module '@intlify/h3' {
 const router = createRouter()
 router.get(
   '/',
-  eventHandler(async (event) => {
+  eventHandler(async event => {
     const t = await useTranslation(event)
     // you can completion when you type `t('`
     return t('hello', { name: 'h3' })
-  }),
+  })
 )
-
 ```
 
 The advantage of this way is that it is not necessary to specify the resource schema in the `useTranslation` type parameter.
-
 
 ## 🛠️ Utilities & Helpers
 

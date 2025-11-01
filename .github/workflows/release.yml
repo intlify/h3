@@ -40,7 +40,7 @@ jobs:
         id: split
         with:
           msg: ${{ github.ref }}
-          separator: '/'
+          separator: /
 
       - name: Create Github Release
         run: gh release create ${{ steps.split.outputs._2 }} --generate-notes

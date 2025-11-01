@@ -3,7 +3,7 @@ import { createApp, createRouter, eventHandler, toNodeListener } from 'h3'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
-  useTranslation,
+  useTranslation
 } from '../../src/index.ts' // in your project, `import { ... } from '@inlify/h3'`
 
 import en from './locales/en.ts'
@@ -13,15 +13,16 @@ import ja from './locales/ja.ts'
 type ResourceSchema = typeof en
 
 // you can put the type extending with `declare module` as global resource schema
-declare module '../../src/index.ts' { // please use `declare module '@intlifly/h3'`, if you want to use global resource schema in your project.
+declare module '../../src/index.ts' {
+  // please use `declare module '@intlifly/h3'`, if you want to use global resource schema in your project.
   export interface DefineLocaleMessage extends ResourceSchema {}
 }
 const middleware = defineI18nMiddleware({
   locale: detectLocaleFromAcceptLanguageHeader,
   messages: {
     en,
-    ja,
-  },
+    ja
+  }
 })
 
 const app = createApp({ ...middleware })
@@ -29,10 +30,10 @@ const app = createApp({ ...middleware })
 const router = createRouter()
 router.get(
   '/',
-  eventHandler(async (event) => {
+  eventHandler(async event => {
     const t = await useTranslation(event)
     return t('hello', { name: 'h3' })
-  }),
+  })
 )
 
 app.use(router)

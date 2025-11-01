@@ -2,7 +2,7 @@ export default {
   hello: 'hello, {name}',
   nest: {
     foo: {
-      bar: 'bar',
-    },
-  },
+      bar: 'bar'
+    }
+  }
 }

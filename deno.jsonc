@@ -3,12 +3,7 @@
     "h3": "npm:h3"
   },
   "fmt": {
-    "exclude": [
-      "node_modules",
-      "dist",
-      "coverage",
-      "**/*.md"
-    ],
+    "exclude": ["node_modules", "dist", "coverage", "**/*.md"],
     "lineWidth": 100,
     "semiColons": false,
     "singleQuote": true
