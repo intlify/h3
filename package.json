@@ -73,7 +73,7 @@
   "devDependencies": {
     "@eslint/compat": "^1.4.0",
     "@eslint/markdown": "latest",
-    "@kazupon/eslint-config": "^0.37.2",
+    "@kazupon/eslint-config": "^0.38.0",
     "@kazupon/prettier-config": "^0.1.1",
     "@types/node": "^20.6.0",
     "@types/supertest": "^6.0.0",
