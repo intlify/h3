@@ -6,6 +6,9 @@ on:
       - '**'
     tags:
       - 'v*'
+permissions:
+  id-token: write
+  contents: write
 
 jobs:
   release:
@@ -63,6 +66,6 @@ jobs:
           commit_message: 'chore: sync changelog'
 
       - name: Publish package
-        run: ./scripts/release.sh
+        run: pnpm publish --access public --no-git-checks
         env:
-          NPM_TOKEN: ${{secrets.NPM_ORG_TOKEN}}
+          NPM_CONFIG_PROVENANCE: true
