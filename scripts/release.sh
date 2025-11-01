@@ -4,7 +4,7 @@ set -xe
 
 # Check edge release
 if [[ ! -z ${EDGE_RELEASE} ]] ; then
-  bunx tsx ./scripts/bump-edge
+  pnpx tsx ./scripts/bump-edge
 fi
 
 # Update token
@@ -17,4 +17,4 @@ fi
 
 # Release packages
 echo "Publishing"
-npm publish
+pnpm publish --access public --no-git-checks

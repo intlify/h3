@@ -70,8 +70,8 @@ You will need to install the below JavaScript runtime:
 
 After cloning the repo, run:
 
-```bash
-$ bun install # install the dependencies of the project
+```sh
+$ pnpm install # install the dependencies of the project
 ```
 
 A high level overview of tools used:
@@ -81,14 +81,16 @@ A high level overview of tools used:
 
 ### Commonly used NPM scripts
 
-    # lint source codes
-    $ npm run lint
+```sh
+# lint source codes
+pnpm lint
 
-    # format source codes
-    $ npm run format
+# format source codes
+pnpm format
 
-    # run the full test suite
-    $ npm run test
+# run the full test suite
+pnpm test
+```
 
 There are some other scripts available in the `scripts` section of the
 `package.json` file.
