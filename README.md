@@ -333,38 +333,7 @@ The advantage of this way is that it is not necessary to specify the resource sc
 
 `@intlify/h3` has a concept of composable utilities & helpers.
 
-### Utilities
-
-`@intlify/h3` composable utilities accept event (from
-`eventHandler((event) => {})`) as their first argument. (Exclude `useTranslation`) return the [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
-
-### Translations
-
-- `useTranslation(event)`: use translation function, asynchronous
-
-### Headers
-
-- `getHeaderLocale(event, options)`: get locale from `accept-language` header
-- `getHeaderLocales(event, options)`: get some locales from `accept-language` header
-- `tryHeaderLocale(event, options)`: try to get locale from `accept-language` header
-- `tryHeaderLocales(event, options)`: try to get some locales from `accept-language` header
-
-### Cookies
-
-- `getCookieLocale(event, options)`: get locale from cookie
-- `tryCookieLocale(event, options)`: try to get locale from cookie
-- `setCookieLocale(event, options)`: set locale to cookie
-
-### Misc
-
-- `getPathLocale(event, options)`: get locale from path
-- `tryPathLocale(event, options)`: try to get locale from path
-- `getQueryLocale(event, options)`: get locale from query
-- `tryQueryLocale(event, options)`: try to get locale from query
-
-## Helpers
-
-- `detectLocaleFromAcceptLanguageHeader(event)`: detect locale from `accept-language` header
+See the [API References](./docs/index.md)
 
 ## 🙌 Contributing guidelines
 

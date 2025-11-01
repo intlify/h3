@@ -1,7 +1,7 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
-  entry: ['scripts/**', 'playground/**'],
+  entry: ['playground/**'],
   ignoreDependencies: ['@vitest/coverage-v8', 'lint-staged']
 }
 
