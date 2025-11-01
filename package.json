@@ -80,7 +80,6 @@
     "@vitest/coverage-v8": "^3.0.0",
     "@vitest/eslint-plugin": "^1.4.0",
     "bumpp": "^10.0.0",
-    "deno": "^2.5.4",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",

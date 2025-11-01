@@ -124,7 +124,6 @@ export function defineI18nMiddleware<
   }
 
   const getLocaleDetector = (event: H3Event, i18n: CoreContext): LocaleDetector => {
-    // deno-fmt-ignore
     return typeof orgLocale === 'function'
       ? orgLocale.bind(null, event, i18n)
       : staticLocaleDetector == null
