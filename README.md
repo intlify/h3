@@ -4,7 +4,7 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![CI][ci-src]][ci-href]
 
-Internationalization middleware & utilities for h3 (and therfore also for Nitro, which is using h3)
+Internationalization middleware & utilities for h3 (and therefore also for Nitro, which is using h3)
 
 ## 🌟 Features
 
@@ -209,7 +209,7 @@ const middleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
 })
 
 const app = createApp({ ...middleware })
-// someting your implementation code ...
+// something your implementation code ...
 // ...
 ```
 
@@ -310,7 +310,7 @@ router.get(
 The advantage of this way is that it is not necessary to specify the resource schema in the `useTranslation` type parameter.
 
 
-## 🛠️ Utilites & Helpers
+## 🛠️ Utilities & Helpers
 
 `@intlify/h3` has a concept of composable utilities & helpers.
 

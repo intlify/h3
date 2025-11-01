@@ -81,7 +81,7 @@ describe('useTranslation', () => {
     expect(t('hello', { name: 'h3' })).toEqual('こんにちは, h3')
   })
 
-  test('not initilize context', async () => {
+  test('not initialize context', async () => {
     const eventMock = {
       node: {
         req: {

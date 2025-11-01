@@ -14,7 +14,7 @@ declare module './index.ts' {
 
 test('defineI18nMiddleware', () => {
   const en = {
-    hello: 'workd',
+    hello: 'worked',
   }
   type ResourceSchema = typeof en
   defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
