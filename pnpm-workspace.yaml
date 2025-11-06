@@ -6,3 +6,4 @@ minimumReleaseAgeExclude:
   - eslint
   - '@eslint/js'
   - '@typescript/native-preview'
+  - '@vitest/eslint-plugin'
