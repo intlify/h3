@@ -8,8 +8,8 @@ Internationalization middleware & utilities for h3 (and therefore also for Nitro
 
 <!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
-> [!NOTE]
-> You’re viewing the main branch, which is developing for h3 v2. If you want to check h3 v1, please see the [v1 branch](https://github.com/intlify/h3/tree/v1)
+> [!IMPORTANT]
+> You’re viewing the legacy repository, which is developing for `@intlify/h3` v1. If you want to use later version of it, please access the [srvmid](https://github.com/intlify/srvmid/tree/main)
 
 <!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
