@@ -71,7 +71,7 @@
   },
   "dependencies": {
     "@intlify/core": "^11.1.12",
-    "@intlify/utils": "^0.13.0"
+    "@intlify/utils": "^0.14.0"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.1",
